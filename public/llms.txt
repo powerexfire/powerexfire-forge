@@ -1,0 +1,16 @@
+# Powerex Fire Protection System
+
+> Fire safety company based in Vasai East, Mumbai, serving India since 2010. GST-verified proprietorship (GSTIN 27ABKPY1137F1ZH) supplying, installing and maintaining fire extinguishers, alarm systems, hydrant & sprinkler systems, PPE, and delivering fire safety training.
+
+Contact: +91 91677 52444 · info@powerexfire.com · sales@powerexfire.com
+
+## Pages
+
+- [Home](/): Overview of Powerex Fire, services, and 24/7 emergency support.
+- [About](/about): Company history, mission, vision and proprietor details.
+- [Services](/services): Full catalog — extinguishers, alarms, hydrants, AMC, PPE, training.
+- [Contact](/contact): Phone, WhatsApp, email addresses, office address and enquiry form.
+
+## Optional
+
+- [Sitemap](/sitemap.xml): Machine-readable list of indexable URLs.
