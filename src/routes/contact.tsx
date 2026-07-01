@@ -10,6 +10,10 @@ export const Route = createFileRoute("/contact")({
       { name: "description", content: "Get in touch with Powerex Fire Protection System. Call +91 91677 52444, WhatsApp, email sales@powerexfire.com or visit our Vasai East office." },
       { property: "og:title", content: "Contact Powerex Fire" },
       { property: "og:description", content: "Call, WhatsApp, email or visit us in Vasai East, Mumbai." },
+      { property: "og:url", content: "https://powerexfire.in/contact" },
+    ],
+    links: [
+      { rel: "canonical", href: "https://powerexfire.in/contact" },
     ],
   }),
   component: Contact,

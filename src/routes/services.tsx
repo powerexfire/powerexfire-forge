@@ -5,10 +5,14 @@ import alarm from "@/assets/alarm-system.jpg";
 export const Route = createFileRoute("/services")({
   head: () => ({
     meta: [
-      { title: "Fire Safety Services — Extinguishers, Alarms, AMC | Powerex Fire" },
+      { title: "Fire Safety Services — Powerex Fire, Mumbai" },
       { name: "description", content: "Full range of fire protection services: ABC/CO2/foam extinguishers, fire alarm systems, hydrant & sprinkler turnkey projects, AMC, refilling and training." },
       { property: "og:title", content: "Powerex Fire — Services" },
       { property: "og:description", content: "Complete fire protection: equipment, installation, AMC, training." },
+      { property: "og:url", content: "https://powerexfire.in/services" },
+    ],
+    links: [
+      { rel: "canonical", href: "https://powerexfire.in/services" },
     ],
   }),
   component: Services,
