@@ -11,6 +11,10 @@ Contact: +91 91677 52444 · info@powerexfire.com · sales@powerexfire.com
 - [Services](/services): Full catalog — extinguishers, alarms, hydrants, AMC, PPE, training.
 - [Contact](/contact): Phone, WhatsApp, email addresses, office address and enquiry form.
 
+## Guides
+
+- [Types of fire suppression systems](/guides/fire-suppression-systems): CO2, clean agent, foam, water mist, dry chemical and kitchen hood systems compared.
+
 ## Optional
 
 - [Sitemap](/sitemap.xml): Machine-readable list of indexable URLs.
