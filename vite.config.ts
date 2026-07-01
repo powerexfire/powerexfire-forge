@@ -19,6 +19,7 @@ export default defineConfig({
       { path: "/about" },
       { path: "/services" },
       { path: "/contact" },
+      { path: "/guides/fire-suppression-systems" },
     ],
     prerender: {
       enabled: true,
