@@ -6,10 +6,14 @@ import extinguishers from "@/assets/extinguishers.jpg";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Powerex Fire Protection System — Fire Safety in Vasai & Mumbai" },
+      { title: "Powerex Fire — Fire Safety in Vasai & Mumbai" },
       { name: "description", content: "Fire extinguishers, alarms, hydrant systems, AMC and safety training. Trusted fire protection since 2010. Serving Vasai-Virar, Mumbai & all of India." },
       { property: "og:title", content: "Powerex Fire Protection System" },
       { property: "og:description", content: "Protecting lives with reliable fire safety solutions. Call +91 91677 52444." },
+      { property: "og:url", content: "https://powerexfire.in/" },
+    ],
+    links: [
+      { rel: "canonical", href: "https://powerexfire.in/" },
     ],
     scripts: [
       {
@@ -18,7 +22,8 @@ export const Route = createFileRoute("/")({
           "@context": "https://schema.org",
           "@type": "LocalBusiness",
           name: "Powerex Fire Protection System",
-          image: "",
+          image: "https://powerexfire.in/og-image.jpg",
+          url: "https://powerexfire.in/",
           telephone: "+91-91677-52444",
           email: "info@powerexfire.com",
           priceRange: "₹₹",
@@ -39,6 +44,47 @@ export const Route = createFileRoute("/")({
             "https://twitter.com/powerexfire",
           ],
           taxID: "27ABKPY1137F1ZH",
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faqs.map((f) => ({
+            "@type": "Question",
+            name: f.q,
+            acceptedAnswer: { "@type": "Answer", text: f.a },
+          })),
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Service",
+          serviceType: "Fire Protection & Safety Services",
+          provider: {
+            "@type": "LocalBusiness",
+            name: "Powerex Fire Protection System",
+            telephone: "+91-91677-52444",
+          },
+          areaServed: { "@type": "Country", name: "India" },
+          hasOfferCatalog: {
+            "@type": "OfferCatalog",
+            name: "Fire Safety Services",
+            itemListElement: [
+              "Fire Extinguishers (ABC, CO2, Foam, Clean Agent)",
+              "Fire Alarm Systems",
+              "Hydrant & Sprinkler Systems",
+              "Refilling & Annual Maintenance Contracts",
+              "Fire Safety Training & Mock Drills",
+              "Personal Protection Equipment",
+            ].map((name) => ({
+              "@type": "Offer",
+              itemOffered: { "@type": "Service", name },
+            })),
+          },
         }),
       },
     ],
