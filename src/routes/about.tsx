@@ -5,9 +5,13 @@ export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
       { title: "About Powerex Fire Protection System | Vasai, Mumbai" },
-      { name: "description", content: "Powerex Fire Protection System has been delivering fire safety equipment and consulting across India since 2010. GST-verified proprietorship led by Santosh Kumar Yadav." },
+      { name: "description", content: "Powerex Fire Protection System has served India since 2010 — GST-verified proprietorship led by Santosh Kumar Yadav, Vasai, Mumbai." },
       { property: "og:title", content: "About Powerex Fire Protection System" },
       { property: "og:description", content: "Trusted fire safety equipment & consulting since 2010." },
+      { property: "og:url", content: "https://powerexfire.in/about" },
+    ],
+    links: [
+      { rel: "canonical", href: "https://powerexfire.in/about" },
     ],
   }),
   component: About,
