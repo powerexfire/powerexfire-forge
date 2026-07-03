@@ -13,7 +13,7 @@ export function SiteFooter() {
               POWEREX <span className="text-primary">FIRE</span>
             </h3>
           </div>
-          <p className="mt-3 text-sm text-secondary-foreground/70">
+          <p className="mt-3 text-sm text-secondary-foreground/85">
             Protecting lives with reliable fire safety solutions since 2010.
           </p>
           <div className="mt-4 flex gap-3">
@@ -44,14 +44,14 @@ export function SiteFooter() {
         <div>
           <h4 className="text-sm font-bold uppercase tracking-wider">Verified Business</h4>
           <div className="mt-3 rounded-md border border-white/10 bg-white/5 p-3 text-xs text-secondary-foreground/80">
-            <p><span className="text-secondary-foreground/60">GSTIN:</span> 27ABKPY1137F1ZH</p>
-            <p className="mt-1"><span className="text-secondary-foreground/60">Proprietor:</span> Santosh Kumar Doodhnath Yadav</p>
-            <p className="mt-1"><span className="text-secondary-foreground/60">Since:</span> 2010</p>
+            <p><span className="text-secondary-foreground/80">GSTIN:</span> 27ABKPY1137F1ZH</p>
+            <p className="mt-1"><span className="text-secondary-foreground/80">Proprietor:</span> Santosh Kumar Doodhnath Yadav</p>
+            <p className="mt-1"><span className="text-secondary-foreground/80">Since:</span> 2010</p>
           </div>
         </div>
       </div>
       <div className="border-t border-white/10">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-4 py-4 text-xs text-secondary-foreground/60 md:flex-row">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-4 py-4 text-xs text-secondary-foreground/80 md:flex-row">
           <p>© {new Date().getFullYear()} Powerex Fire Protection System. All rights reserved.</p>
           <p>Built for safety. Trusted across India.</p>
         </div>
