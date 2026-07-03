@@ -149,9 +149,9 @@ function Home() {
               </Link>
             </div>
             <dl className="mt-10 grid max-w-md grid-cols-3 gap-6">
-              <div><dt className="text-2xl font-bold text-primary">15+</dt><dd className="text-xs text-secondary-foreground/70">Years of service</dd></div>
-              <div><dt className="text-2xl font-bold text-primary">100+</dt><dd className="text-xs text-secondary-foreground/70">Clients served</dd></div>
-              <div><dt className="text-2xl font-bold text-primary">24/7</dt><dd className="text-xs text-secondary-foreground/70">Emergency support</dd></div>
+              <div><dt className="text-2xl font-bold text-primary">15+</dt><dd className="text-xs text-secondary-foreground/85">Years of service</dd></div>
+              <div><dt className="text-2xl font-bold text-primary">100+</dt><dd className="text-xs text-secondary-foreground/85">Clients served</dd></div>
+              <div><dt className="text-2xl font-bold text-primary">24/7</dt><dd className="text-xs text-secondary-foreground/85">Emergency support</dd></div>
             </dl>
           </div>
         </div>
