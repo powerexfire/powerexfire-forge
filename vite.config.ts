@@ -8,10 +8,12 @@ import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
 // @cloudflare/vite-plugin builds from this — wrangler.jsonc main alone is insufficient.
-const isGitHubPages = process.env.GITHUB_PAGES === "1";
-
+// This project is a static site deployed to GitHub Pages — the Cloudflare
+// Worker adapter breaks prerender (produces index.mjs instead of the
+// server.js the preview server expects), so we disable Nitro's cloudflare
+// preset unconditionally and let the Node preset generate dist/server/server.js.
 export default defineConfig({
-  ...(isGitHubPages ? { cloudflare: false } : {}),
+  nitro: false,
   tanstackStart: {
     server: { entry: "server" },
     pages: [
