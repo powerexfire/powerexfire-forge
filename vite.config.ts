@@ -8,12 +8,9 @@ import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
 // @cloudflare/vite-plugin builds from this — wrangler.jsonc main alone is insufficient.
-// This project is a static site deployed to GitHub Pages — the Cloudflare
-// Worker adapter breaks prerender (produces index.mjs instead of the
-// server.js the preview server expects), so we disable Nitro's cloudflare
-// preset unconditionally and let the Node preset generate dist/server/server.js.
+// The published deployment runs on Cloudflare Workers (powerexfire.lovable.app),
+// so we keep the default Nitro Cloudflare preset that the base config provides.
 export default defineConfig({
-  nitro: false,
   tanstackStart: {
     server: { entry: "server" },
     pages: [
@@ -29,12 +26,9 @@ export default defineConfig({
       autoStaticPathsDiscovery: true,
       failOnError: true,
     },
-    // SPA fallback is intentionally disabled for GitHub Pages — the
-    // prepare-github-pages script copies index.html to 404.html so GitHub
-    // Pages serves the SPA shell for unknown paths.
     sitemap: {
       enabled: true,
-      host: "https://powerexfire.in",
+      host: "https://powerexfire.lovable.app",
       outputPath: "sitemap.xml",
     },
   },
