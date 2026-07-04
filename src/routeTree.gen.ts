@@ -15,6 +15,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as GuidesFireSuppressionSystemsRouteImport } from './routes/guides.fire-suppression-systems'
+import { Route as ApiPublicGscSetupRouteImport } from './routes/api/public/gsc-setup'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
@@ -47,6 +48,11 @@ const GuidesFireSuppressionSystemsRoute =
     path: '/guides/fire-suppression-systems',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicGscSetupRoute = ApiPublicGscSetupRouteImport.update({
+  id: '/api/public/gsc-setup',
+  path: '/api/public/gsc-setup',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -55,6 +61,7 @@ export interface FileRoutesByFullPath {
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/guides/fire-suppression-systems': typeof GuidesFireSuppressionSystemsRoute
+  '/api/public/gsc-setup': typeof ApiPublicGscSetupRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -63,6 +70,7 @@ export interface FileRoutesByTo {
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/guides/fire-suppression-systems': typeof GuidesFireSuppressionSystemsRoute
+  '/api/public/gsc-setup': typeof ApiPublicGscSetupRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -72,6 +80,7 @@ export interface FileRoutesById {
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/guides/fire-suppression-systems': typeof GuidesFireSuppressionSystemsRoute
+  '/api/public/gsc-setup': typeof ApiPublicGscSetupRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -82,6 +91,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/sitemap.xml'
     | '/guides/fire-suppression-systems'
+    | '/api/public/gsc-setup'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -90,6 +100,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/sitemap.xml'
     | '/guides/fire-suppression-systems'
+    | '/api/public/gsc-setup'
   id:
     | '__root__'
     | '/'
@@ -98,6 +109,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/sitemap.xml'
     | '/guides/fire-suppression-systems'
+    | '/api/public/gsc-setup'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -107,6 +119,7 @@ export interface RootRouteChildren {
   ServicesRoute: typeof ServicesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   GuidesFireSuppressionSystemsRoute: typeof GuidesFireSuppressionSystemsRoute
+  ApiPublicGscSetupRoute: typeof ApiPublicGscSetupRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -153,6 +166,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GuidesFireSuppressionSystemsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/gsc-setup': {
+      id: '/api/public/gsc-setup'
+      path: '/api/public/gsc-setup'
+      fullPath: '/api/public/gsc-setup'
+      preLoaderRoute: typeof ApiPublicGscSetupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -163,6 +183,7 @@ const rootRouteChildren: RootRouteChildren = {
   ServicesRoute: ServicesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   GuidesFireSuppressionSystemsRoute: GuidesFireSuppressionSystemsRoute,
+  ApiPublicGscSetupRoute: ApiPublicGscSetupRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
