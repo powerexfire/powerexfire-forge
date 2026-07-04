@@ -6,11 +6,18 @@
 // You can pass additional config via defineConfig({ vite: { ... } }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
-// Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
-// @cloudflare/vite-plugin builds from this — wrangler.jsonc main alone is insufficient.
-// The published deployment runs on Cloudflare Workers (powerexfire.lovable.app),
-// so we keep the default Nitro Cloudflare preset that the base config provides.
+// Two deploy targets share this config:
+// - Default (Lovable / Cloudflare Workers): keep the Nitro Cloudflare preset
+//   the base config provides, and SSR pages at runtime. Prerender is OFF here
+//   because the Cloudflare Worker output (dist/server/index.mjs) cannot be
+//   served by the Node preview server TanStack spins up for prerender.
+// - GitHub Pages static (GITHUB_PAGES=1): disable the Cloudflare preset so
+//   the Node preset writes dist/server/server.js, then prerender every route
+//   into static HTML for GitHub Pages.
+const isGithubPages = process.env.GITHUB_PAGES === "1";
+
 export default defineConfig({
+  ...(isGithubPages ? { nitro: false } : {}),
   tanstackStart: {
     server: { entry: "server" },
     pages: [
@@ -21,7 +28,7 @@ export default defineConfig({
       { path: "/guides/fire-suppression-systems" },
     ],
     prerender: {
-      enabled: true,
+      enabled: isGithubPages,
       crawlLinks: true,
       autoStaticPathsDiscovery: true,
       failOnError: true,
