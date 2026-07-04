@@ -87,6 +87,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:description", content: "Powerex Fire Protection System: fire extinguishers, alarms, hydrants, AMC & training across Mumbai. GST-verified. Call +91 91677 52444." },
       { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/2084b0bb-8abf-4f28-be54-3f174e9bf2a9/id-preview-f443b52b--e0e3e7f0-fb76-4db3-b7a5-abbceda91ce7.lovable.app-1779269737943.png" },
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/2084b0bb-8abf-4f28-be54-3f174e9bf2a9/id-preview-f443b52b--e0e3e7f0-fb76-4db3-b7a5-abbceda91ce7.lovable.app-1779269737943.png" },
+      { name: "google-site-verification", content: "4wkEBPWtRwZqJ_0Guf7ZS4OwaKEfx3hjxvAFyT_rkWM" },
     ],
     links: [
       {
