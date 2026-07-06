@@ -15,6 +15,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as GuidesFireSuppressionSystemsRouteImport } from './routes/guides.fire-suppression-systems'
+import { Route as GuidesFireExtinguisherTypesRouteImport } from './routes/guides.fire-extinguisher-types'
 import { Route as ApiPublicGscSetupRouteImport } from './routes/api/public/gsc-setup'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -48,6 +49,12 @@ const GuidesFireSuppressionSystemsRoute =
     path: '/guides/fire-suppression-systems',
     getParentRoute: () => rootRouteImport,
   } as any)
+const GuidesFireExtinguisherTypesRoute =
+  GuidesFireExtinguisherTypesRouteImport.update({
+    id: '/guides/fire-extinguisher-types',
+    path: '/guides/fire-extinguisher-types',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicGscSetupRoute = ApiPublicGscSetupRouteImport.update({
   id: '/api/public/gsc-setup',
   path: '/api/public/gsc-setup',
@@ -60,6 +67,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/guides/fire-extinguisher-types': typeof GuidesFireExtinguisherTypesRoute
   '/guides/fire-suppression-systems': typeof GuidesFireSuppressionSystemsRoute
   '/api/public/gsc-setup': typeof ApiPublicGscSetupRoute
 }
@@ -69,6 +77,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/guides/fire-extinguisher-types': typeof GuidesFireExtinguisherTypesRoute
   '/guides/fire-suppression-systems': typeof GuidesFireSuppressionSystemsRoute
   '/api/public/gsc-setup': typeof ApiPublicGscSetupRoute
 }
@@ -79,6 +88,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/guides/fire-extinguisher-types': typeof GuidesFireExtinguisherTypesRoute
   '/guides/fire-suppression-systems': typeof GuidesFireSuppressionSystemsRoute
   '/api/public/gsc-setup': typeof ApiPublicGscSetupRoute
 }
@@ -90,6 +100,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/services'
     | '/sitemap.xml'
+    | '/guides/fire-extinguisher-types'
     | '/guides/fire-suppression-systems'
     | '/api/public/gsc-setup'
   fileRoutesByTo: FileRoutesByTo
@@ -99,6 +110,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/services'
     | '/sitemap.xml'
+    | '/guides/fire-extinguisher-types'
     | '/guides/fire-suppression-systems'
     | '/api/public/gsc-setup'
   id:
@@ -108,6 +120,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/services'
     | '/sitemap.xml'
+    | '/guides/fire-extinguisher-types'
     | '/guides/fire-suppression-systems'
     | '/api/public/gsc-setup'
   fileRoutesById: FileRoutesById
@@ -118,6 +131,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   ServicesRoute: typeof ServicesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  GuidesFireExtinguisherTypesRoute: typeof GuidesFireExtinguisherTypesRoute
   GuidesFireSuppressionSystemsRoute: typeof GuidesFireSuppressionSystemsRoute
   ApiPublicGscSetupRoute: typeof ApiPublicGscSetupRoute
 }
@@ -166,6 +180,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GuidesFireSuppressionSystemsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/guides/fire-extinguisher-types': {
+      id: '/guides/fire-extinguisher-types'
+      path: '/guides/fire-extinguisher-types'
+      fullPath: '/guides/fire-extinguisher-types'
+      preLoaderRoute: typeof GuidesFireExtinguisherTypesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/gsc-setup': {
       id: '/api/public/gsc-setup'
       path: '/api/public/gsc-setup'
@@ -182,6 +203,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   ServicesRoute: ServicesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  GuidesFireExtinguisherTypesRoute: GuidesFireExtinguisherTypesRoute,
   GuidesFireSuppressionSystemsRoute: GuidesFireSuppressionSystemsRoute,
   ApiPublicGscSetupRoute: ApiPublicGscSetupRoute,
 }
