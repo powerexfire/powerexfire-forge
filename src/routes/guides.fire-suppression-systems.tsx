@@ -2,6 +2,21 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Flame, Droplets, Wind, Shield, CheckCircle2 } from "lucide-react";
 import alarm from "@/assets/alarm-system.jpg";
 
+const faqs = [
+  {
+    q: "Is a fire suppression system the same as a sprinkler?",
+    a: "Sprinklers are one type of suppression system. \"Fire suppression\" also covers gas, foam and dry chemical systems designed for hazards where water isn't the best agent.",
+  },
+  {
+    q: "Which system is best for a server room?",
+    a: "A clean agent system (FM-200 or Novec 1230) is standard for occupied server rooms — it extinguishes fire in seconds, leaves no residue and is safe for people.",
+  },
+  {
+    q: "How often should a suppression system be serviced?",
+    a: "At least once a year, plus a full agent and cylinder inspection every five years. An annual maintenance contract (AMC) keeps you compliant with IS and NFPA requirements.",
+  },
+];
+
 export const Route = createFileRoute("/guides/fire-suppression-systems")({
   head: () => ({
     meta: [
@@ -33,6 +48,18 @@ export const Route = createFileRoute("/guides/fire-suppression-systems")({
           mainEntityOfPage: "https://powerexfire.lovable.app/guides/fire-suppression-systems",
           datePublished: "2026-07-01",
           dateModified: "2026-07-01",
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faqs.map((f) => ({
+            "@type": "Question",
+            name: f.q,
+            acceptedAnswer: { "@type": "Answer", text: f.a },
+          })),
         }),
       },
     ],

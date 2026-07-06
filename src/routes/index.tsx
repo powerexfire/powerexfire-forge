@@ -119,7 +119,7 @@ function Home() {
     <>
       {/* Hero */}
       <section className="relative overflow-hidden bg-secondary text-secondary-foreground">
-        <img src={heroImg} alt="" width={1920} height={1080} className="absolute inset-0 h-full w-full object-cover opacity-40" />
+        <img src={heroImg} alt="" width={1920} height={1080} fetchPriority="high" decoding="async" className="absolute inset-0 h-full w-full object-cover opacity-40" />
         <div className="absolute inset-0 bg-gradient-to-r from-secondary via-secondary/80 to-secondary/30" />
         <div className="relative mx-auto grid max-w-6xl gap-8 px-4 py-20 md:py-32">
           <div className="max-w-2xl">
