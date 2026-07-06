@@ -10,10 +10,10 @@ export const Route = createFileRoute("/")({
       { name: "description", content: "Fire extinguishers, alarms, hydrant systems, AMC and safety training. Trusted fire protection since 2010. Serving Vasai-Virar, Mumbai & all of India." },
       { property: "og:title", content: "Powerex Fire Protection System" },
       { property: "og:description", content: "Protecting lives with reliable fire safety solutions. Call +91 91677 52444." },
-      { property: "og:url", content: "https://powerexfire.in/" },
+      { property: "og:url", content: "https://powerexfire.lovable.app/" },
     ],
     links: [
-      { rel: "canonical", href: "https://powerexfire.in/" },
+      { rel: "canonical", href: "https://powerexfire.lovable.app/" },
     ],
     scripts: [
       {
@@ -22,8 +22,8 @@ export const Route = createFileRoute("/")({
           "@context": "https://schema.org",
           "@type": "LocalBusiness",
           name: "Powerex Fire Protection System",
-          image: "https://powerexfire.in/og-image.jpg",
-          url: "https://powerexfire.in/",
+          image: "https://powerexfire.lovable.app/og-image.jpg",
+          url: "https://powerexfire.lovable.app/",
           telephone: "+91-91677-52444",
           email: "info@powerexfire.com",
           priceRange: "₹₹",

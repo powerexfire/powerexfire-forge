@@ -8,10 +8,10 @@ export const Route = createFileRoute("/about")({
       { name: "description", content: "Powerex Fire Protection System has served India since 2010 — GST-verified proprietorship led by Santosh Kumar Yadav, Vasai, Mumbai." },
       { property: "og:title", content: "About Powerex Fire Protection System" },
       { property: "og:description", content: "Trusted fire safety equipment & consulting since 2010." },
-      { property: "og:url", content: "https://powerexfire.in/about" },
+      { property: "og:url", content: "https://powerexfire.lovable.app/about" },
     ],
     links: [
-      { rel: "canonical", href: "https://powerexfire.in/about" },
+      { rel: "canonical", href: "https://powerexfire.lovable.app/about" },
     ],
   }),
   component: About,

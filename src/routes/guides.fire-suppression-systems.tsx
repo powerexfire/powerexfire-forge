@@ -9,12 +9,12 @@ export const Route = createFileRoute("/guides/fire-suppression-systems")({
       { name: "description", content: "Guide to fire suppression systems — CO2, clean agent, foam, water mist, dry chemical and kitchen hood systems. Compare uses, pros and cons for your business." },
       { property: "og:title", content: "Types of Fire Suppression Systems for Businesses" },
       { property: "og:description", content: "Compare CO2, clean agent, foam, water mist and dry chemical fire suppression systems and pick the right one for your site." },
-      { property: "og:url", content: "https://powerexfire.in/guides/fire-suppression-systems" },
+      { property: "og:url", content: "https://powerexfire.lovable.app/guides/fire-suppression-systems" },
       { property: "og:type", content: "article" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
-      { rel: "canonical", href: "https://powerexfire.in/guides/fire-suppression-systems" },
+      { rel: "canonical", href: "https://powerexfire.lovable.app/guides/fire-suppression-systems" },
     ],
     scripts: [
       {
@@ -28,9 +28,9 @@ export const Route = createFileRoute("/guides/fire-suppression-systems")({
           publisher: {
             "@type": "Organization",
             name: "Powerex Fire Protection System",
-            logo: { "@type": "ImageObject", url: "https://powerexfire.in/og-image.jpg" },
+            logo: { "@type": "ImageObject", url: "https://powerexfire.lovable.app/og-image.jpg" },
           },
-          mainEntityOfPage: "https://powerexfire.in/guides/fire-suppression-systems",
+          mainEntityOfPage: "https://powerexfire.lovable.app/guides/fire-suppression-systems",
           datePublished: "2026-07-01",
           dateModified: "2026-07-01",
         }),
