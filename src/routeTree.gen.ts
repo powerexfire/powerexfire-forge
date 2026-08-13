@@ -16,6 +16,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as GuidesFireSuppressionSystemsRouteImport } from './routes/guides.fire-suppression-systems'
 import { Route as GuidesFireExtinguisherTypesRouteImport } from './routes/guides.fire-extinguisher-types'
+import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as ApiPublicGscSetupRouteImport } from './routes/api/public/gsc-setup'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -55,6 +56,11 @@ const GuidesFireExtinguisherTypesRoute =
     path: '/guides/fire-extinguisher-types',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiChatRoute = ApiChatRouteImport.update({
+  id: '/api/chat',
+  path: '/api/chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicGscSetupRoute = ApiPublicGscSetupRouteImport.update({
   id: '/api/public/gsc-setup',
   path: '/api/public/gsc-setup',
@@ -67,6 +73,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/api/chat': typeof ApiChatRoute
   '/guides/fire-extinguisher-types': typeof GuidesFireExtinguisherTypesRoute
   '/guides/fire-suppression-systems': typeof GuidesFireSuppressionSystemsRoute
   '/api/public/gsc-setup': typeof ApiPublicGscSetupRoute
@@ -77,6 +84,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/api/chat': typeof ApiChatRoute
   '/guides/fire-extinguisher-types': typeof GuidesFireExtinguisherTypesRoute
   '/guides/fire-suppression-systems': typeof GuidesFireSuppressionSystemsRoute
   '/api/public/gsc-setup': typeof ApiPublicGscSetupRoute
@@ -88,6 +96,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/api/chat': typeof ApiChatRoute
   '/guides/fire-extinguisher-types': typeof GuidesFireExtinguisherTypesRoute
   '/guides/fire-suppression-systems': typeof GuidesFireSuppressionSystemsRoute
   '/api/public/gsc-setup': typeof ApiPublicGscSetupRoute
@@ -100,6 +109,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/services'
     | '/sitemap.xml'
+    | '/api/chat'
     | '/guides/fire-extinguisher-types'
     | '/guides/fire-suppression-systems'
     | '/api/public/gsc-setup'
@@ -110,6 +120,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/services'
     | '/sitemap.xml'
+    | '/api/chat'
     | '/guides/fire-extinguisher-types'
     | '/guides/fire-suppression-systems'
     | '/api/public/gsc-setup'
@@ -120,6 +131,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/services'
     | '/sitemap.xml'
+    | '/api/chat'
     | '/guides/fire-extinguisher-types'
     | '/guides/fire-suppression-systems'
     | '/api/public/gsc-setup'
@@ -131,6 +143,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   ServicesRoute: typeof ServicesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  ApiChatRoute: typeof ApiChatRoute
   GuidesFireExtinguisherTypesRoute: typeof GuidesFireExtinguisherTypesRoute
   GuidesFireSuppressionSystemsRoute: typeof GuidesFireSuppressionSystemsRoute
   ApiPublicGscSetupRoute: typeof ApiPublicGscSetupRoute
@@ -187,6 +200,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GuidesFireExtinguisherTypesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/chat': {
+      id: '/api/chat'
+      path: '/api/chat'
+      fullPath: '/api/chat'
+      preLoaderRoute: typeof ApiChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/gsc-setup': {
       id: '/api/public/gsc-setup'
       path: '/api/public/gsc-setup'
@@ -203,6 +223,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   ServicesRoute: ServicesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  ApiChatRoute: ApiChatRoute,
   GuidesFireExtinguisherTypesRoute: GuidesFireExtinguisherTypesRoute,
   GuidesFireSuppressionSystemsRoute: GuidesFireSuppressionSystemsRoute,
   ApiPublicGscSetupRoute: ApiPublicGscSetupRoute,
@@ -210,3 +231,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
