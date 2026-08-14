@@ -20,6 +20,16 @@ type SpeechRecognitionLike = {
   onend: (() => void) | null;
 };
 
+// The site is also hosted statically (GitHub Pages), where no server route exists.
+// In that case talk to the CORS-enabled public endpoint on the app host.
+const API_HOST = "https://powerexfire.lovable.app";
+function chatEndpoint() {
+  if (typeof window === "undefined") return "/api/chat";
+  return window.location.hostname.endsWith("lovable.app") || window.location.hostname === "localhost"
+    ? "/api/chat"
+    : `${API_HOST}/api/public/chat`;
+}
+
 function getRecognition(): SpeechRecognitionLike | null {
   if (typeof window === "undefined") return null;
   const w = window as unknown as {
@@ -40,6 +50,7 @@ export function ChatWidget({ open, onClose }: { open: boolean; onClose: () => vo
   const [voiceSupported, setVoiceSupported] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
+  const handsFreeRef = useRef(false);
 
   useEffect(() => {
     setVoiceSupported(!!getRecognition());
@@ -50,7 +61,12 @@ export function ChatWidget({ open, onClose }: { open: boolean; onClose: () => vo
   }, [messages, loading, open]);
 
   useEffect(() => {
-    if (!open) return;
+    if (!open) {
+      handsFreeRef.current = false;
+      recognitionRef.current?.stop();
+      if (typeof window !== "undefined") window.speechSynthesis?.cancel();
+      return;
+    }
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
@@ -66,11 +82,13 @@ export function ChatWidget({ open, onClose }: { open: boolean; onClose: () => vo
     [],
   );
 
-  const speak = (text: string) => {
+  const speak = (text: string, onDone?: () => void) => {
     if (typeof window === "undefined" || !window.speechSynthesis) return;
     window.speechSynthesis.cancel();
     const utter = new SpeechSynthesisUtterance(text.replace(/[*_#`]/g, ""));
     utter.lang = "en-IN";
+    utter.onend = () => onDone?.();
+    utter.onerror = () => onDone?.();
     window.speechSynthesis.speak(utter);
   };
 
@@ -83,7 +101,7 @@ export function ChatWidget({ open, onClose }: { open: boolean; onClose: () => vo
     setMessages(next);
     setLoading(true);
     try {
-      const res = await fetch("/api/chat", {
+      const res = await fetch(chatEndpoint(), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: next.filter((m) => m !== GREETING) }),
@@ -94,7 +112,12 @@ export function ChatWidget({ open, onClose }: { open: boolean; onClose: () => vo
       }
       const reply = data.reply;
       setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
-      if (voiceReplies) speak(reply);
+      if (voiceReplies) {
+        // Speak the answer, then resume listening so voice in + voice out work together.
+        speak(reply, () => {
+          if (handsFreeRef.current) startListening();
+        });
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
     } finally {
@@ -102,14 +125,10 @@ export function ChatWidget({ open, onClose }: { open: boolean; onClose: () => vo
     }
   };
 
-  const toggleMic = () => {
-    if (listening) {
-      recognitionRef.current?.stop();
-      setListening(false);
-      return;
-    }
+  const startListening = () => {
     const rec = getRecognition();
     if (!rec) return;
+    if (typeof window !== "undefined") window.speechSynthesis?.cancel();
     recognitionRef.current = rec;
     rec.lang = "en-IN";
     rec.interimResults = false;
@@ -120,6 +139,7 @@ export function ChatWidget({ open, onClose }: { open: boolean; onClose: () => vo
     };
     rec.onerror = () => {
       setListening(false);
+      handsFreeRef.current = false;
       setError("Microphone access failed. Please allow mic permission and try again.");
     };
     rec.onend = () => setListening(false);
@@ -130,6 +150,17 @@ export function ChatWidget({ open, onClose }: { open: boolean; onClose: () => vo
     } catch {
       setListening(false);
     }
+  };
+
+  const toggleMic = () => {
+    if (listening || handsFreeRef.current) {
+      handsFreeRef.current = false;
+      recognitionRef.current?.stop();
+      setListening(false);
+      return;
+    }
+    handsFreeRef.current = true;
+    startListening();
   };
 
   if (!open) return null;
