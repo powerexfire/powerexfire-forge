@@ -61,7 +61,12 @@ export function ChatWidget({ open, onClose }: { open: boolean; onClose: () => vo
   }, [messages, loading, open]);
 
   useEffect(() => {
-    if (!open) return;
+    if (!open) {
+      handsFreeRef.current = false;
+      recognitionRef.current?.stop();
+      if (typeof window !== "undefined") window.speechSynthesis?.cancel();
+      return;
+    }
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
