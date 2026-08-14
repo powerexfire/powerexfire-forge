@@ -28,8 +28,6 @@ export function FeedbackDialog({ open, onClose }: { open: boolean; onClose: () =
     };
   }, [open, onClose]);
 
-  if (!open) return null;
-
   const validate = () => {
     const next: Errors = {};
     if (name.trim().length < 2) next.name = "Please enter your full name.";
