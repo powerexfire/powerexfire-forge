@@ -96,6 +96,8 @@ export function FeedbackDialog({ open, onClose }: { open: boolean; onClose: () =
   const field =
     "mt-1 w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm text-foreground outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/30";
 
+  if (!open) return null;
+
   return (
     <div className="fixed inset-0 z-[70] flex items-end justify-center bg-black/60 p-0 backdrop-blur-sm sm:items-center sm:p-4">
       <div
