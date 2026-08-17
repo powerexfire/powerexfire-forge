@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CheckCircle2, Loader2, MessageSquareHeart, X } from "lucide-react";
-
-const WEBHOOK_URL = "https://jawepah.app.n8n.cloud/webhook/feedback";
+import { submitToWebhook } from "@/lib/webhook";
 
 type Errors = Partial<Record<"name" | "phone" | "email" | "feedback", string>>;
 
@@ -13,9 +12,11 @@ export function FeedbackDialog({ open, onClose }: { open: boolean; onClose: () =
   const [errors, setErrors] = useState<Errors>({});
   const [status, setStatus] = useState<"idle" | "sending" | "success">("idle");
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const firstFieldRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!open) return;
+    firstFieldRef.current?.focus();
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
@@ -42,7 +43,7 @@ export function FeedbackDialog({ open, onClose }: { open: boolean; onClose: () =
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitError(null);
-    if (!validate()) return;
+    if (status === "sending" || !validate()) return;
     setStatus("sending");
 
     const payload = {
@@ -50,34 +51,18 @@ export function FeedbackDialog({ open, onClose }: { open: boolean; onClose: () =
       phone: phone.trim(),
       email: email.trim(),
       feedback: feedback.trim(),
-      source: "powerexfire-website",
-      submittedAt: new Date().toISOString(),
+      type: "feedback" as const,
     };
 
-    try {
-      const res = await fetch(WEBHOOK_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const { ok } = await submitToWebhook(payload);
+    if (ok) {
       setStatus("success");
-    } catch {
-      // Fallback for cross-origin restrictions: opaque POST still reaches the webhook.
-      try {
-        await fetch(WEBHOOK_URL, {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "text/plain;charset=UTF-8" },
-          body: JSON.stringify(payload),
-          keepalive: true,
-        });
-        setStatus("success");
-      } catch {
-        setStatus("idle");
-        setSubmitError("We couldn't send your feedback. Please check your connection and try again.");
-      }
+      return;
     }
+    setStatus("idle");
+    setSubmitError(
+      "We couldn't send your feedback. Please check your connection and try again, or call +91 91677 52444.",
+    );
   };
 
   useEffect(() => {
@@ -139,6 +124,7 @@ export function FeedbackDialog({ open, onClose }: { open: boolean; onClose: () =
               </label>
               <input
                 id="fb-name"
+                ref={firstFieldRef}
                 className={field}
                 value={name}
                 autoComplete="name"

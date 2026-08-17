@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import React, { useState } from "react";
 import { z } from "zod";
-import { Phone, Mail, MapPin, MessageCircle, Send, CheckCircle2 } from "lucide-react";
+import { Phone, Mail, MapPin, MessageCircle, Send, CheckCircle2, Loader2 } from "lucide-react";
+import { submitToWebhook } from "@/lib/webhook";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -29,14 +30,18 @@ const schema = z.object({
 function Contact() {
   const [values, setValues] = useState({ name: "", phone: "", email: "", message: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   function update<K extends keyof typeof values>(k: K, v: string) {
     setValues((s) => ({ ...s, [k]: v }));
+    setErrors((e) => (e[k] ? { ...e, [k]: "" } : e));
   }
 
-  function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (status === "sending") return;
+    setSubmitError(null);
     const result = schema.safeParse(values);
     if (!result.success) {
       const errs: Record<string, string> = {};
@@ -45,13 +50,33 @@ function Contact() {
       return;
     }
     setErrors({});
-    const text =
-      `New inquiry from ${result.data.name}%0A` +
-      `Phone: ${result.data.phone}%0A` +
-      (result.data.email ? `Email: ${result.data.email}%0A` : "") +
-      `Message: ${result.data.message}`;
-    window.open(`https://wa.me/919167752444?text=${text}`, "_blank", "noopener,noreferrer");
-    setSent(true);
+    setStatus("sending");
+
+    const { data } = result;
+    // Record the inquiry first so nothing is lost if WhatsApp is blocked.
+    const { ok } = await submitToWebhook({ ...data, type: "quote-request" });
+
+    const text = [
+      `New inquiry from ${data.name}`,
+      `Phone: ${data.phone}`,
+      ...(data.email ? [`Email: ${data.email}`] : []),
+      `Message: ${data.message}`,
+    ].join("\n");
+    const win = window.open(
+      `https://wa.me/919167752444?text=${encodeURIComponent(text)}`,
+      "_blank",
+      "noopener,noreferrer",
+    );
+
+    if (!ok && !win) {
+      setStatus("idle");
+      setSubmitError(
+        "We couldn't send your request. Please call +91 91677 52444 or email sales@powerexfire.com.",
+      );
+      return;
+    }
+    setStatus("sent");
+    setValues({ name: "", phone: "", email: "", message: "" });
   }
 
   return (
@@ -124,14 +149,20 @@ function Contact() {
           <h2 id="form-title" className="text-2xl font-bold">Request a quote</h2>
           <p className="mt-1 text-sm text-muted-foreground">We'll get back within one business day.</p>
 
-          {sent && (
+          {status === "sent" && (
             <div role="status" className="mt-4 flex items-start gap-3 rounded-md border border-primary/30 bg-primary/5 p-3 text-sm">
               <CheckCircle2 className="mt-0.5 h-5 w-5 text-primary" />
               <div>
-                <p className="font-semibold">Thanks — we've opened WhatsApp with your message.</p>
-                <p className="text-muted-foreground">If the chat didn't open, please call +91 91677 52444.</p>
+                <p className="font-semibold">Thanks — your request has been received.</p>
+                <p className="text-muted-foreground">We also opened WhatsApp so you can send it directly. If it didn't open, call +91 91677 52444.</p>
               </div>
             </div>
+          )}
+
+          {submitError && (
+            <p role="alert" className="mt-4 rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
+              {submitError}
+            </p>
           )}
 
           <div className="mt-6 grid gap-4">
@@ -147,8 +178,17 @@ function Contact() {
             <Field id="message" label="How can we help?" required error={errors.message}>
               <textarea id="message" rows={4} required value={values.message} onChange={(e) => update("message", e.target.value)} className="input resize-y" />
             </Field>
-            <button type="submit" className="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90">
-              <Send className="h-4 w-4" /> Send via WhatsApp
+            <button
+              type="submit"
+              disabled={status === "sending"}
+              className="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90 disabled:opacity-60"
+            >
+              {status === "sending" ? (
+                <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+              ) : (
+                <Send className="h-4 w-4" aria-hidden />
+              )}
+              {status === "sending" ? "Sending…" : "Send request"}
             </button>
           </div>
         </form>
@@ -176,13 +216,23 @@ function Contact() {
 }
 
 function Field({ id, label, required, error, children }: { id: string; label: string; required?: boolean; error?: string; children: React.ReactNode }) {
+  const describedBy = error ? `${id}-error` : undefined;
   return (
     <div>
       <label htmlFor={id} className="mb-1.5 block text-sm font-medium">
         {label} {required && <span className="text-primary">*</span>}
       </label>
-      {children}
-      {error && <p role="alert" className="mt-1 text-xs text-destructive">{error}</p>}
+      {React.isValidElement(children)
+        ? React.cloneElement(children as React.ReactElement<Record<string, unknown>>, {
+            "aria-invalid": error ? true : undefined,
+            "aria-describedby": describedBy,
+          })
+        : children}
+      {error && (
+        <p id={describedBy} role="alert" className="mt-1 text-xs text-destructive">
+          {error}
+        </p>
+      )}
     </div>
   );
 }
