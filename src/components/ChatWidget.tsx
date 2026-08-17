@@ -46,11 +46,13 @@ export function ChatWidget({ open, onClose }: { open: boolean; onClose: () => vo
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [listening, setListening] = useState(false);
+  const [speaking, setSpeaking] = useState(false);
   const [voiceReplies, setVoiceReplies] = useState(false);
   const [voiceSupported, setVoiceSupported] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
   const handsFreeRef = useRef(false);
+  const voiceRepliesRef = useRef(false);
 
   useEffect(() => {
     setVoiceSupported(!!getRecognition());
@@ -83,16 +85,29 @@ export function ChatWidget({ open, onClose }: { open: boolean; onClose: () => vo
   );
 
   const speak = (text: string, onDone?: () => void) => {
-    if (typeof window === "undefined" || !window.speechSynthesis) return;
+    if (typeof window === "undefined" || !window.speechSynthesis) {
+      onDone?.();
+      return;
+    }
     window.speechSynthesis.cancel();
     const utter = new SpeechSynthesisUtterance(text.replace(/[*_#`]/g, ""));
     utter.lang = "en-IN";
-    utter.onend = () => onDone?.();
-    utter.onerror = () => onDone?.();
+    const preferredVoice = window.speechSynthesis
+      .getVoices()
+      .find((voice) => voice.lang.toLowerCase().startsWith("en-in"));
+    if (preferredVoice) utter.voice = preferredVoice;
+    const finish = () => {
+      setSpeaking(false);
+      onDone?.();
+    };
+    utter.onstart = () => setSpeaking(true);
+    utter.onend = finish;
+    utter.onerror = finish;
     window.speechSynthesis.speak(utter);
+    if (window.speechSynthesis.paused) window.speechSynthesis.resume();
   };
 
-  const send = async (text: string) => {
+  const send = async (text: string, forceVoiceReply = false) => {
     const content = text.trim();
     if (!content || loading) return;
     setError(null);
@@ -112,7 +127,7 @@ export function ChatWidget({ open, onClose }: { open: boolean; onClose: () => vo
       }
       const reply = data.reply;
       setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
-      if (voiceReplies) {
+      if (forceVoiceReply || voiceRepliesRef.current) {
         // Speak the answer, then resume listening so voice in + voice out work together.
         speak(reply, () => {
           if (handsFreeRef.current) startListening();
@@ -135,7 +150,7 @@ export function ChatWidget({ open, onClose }: { open: boolean; onClose: () => vo
     rec.continuous = false;
     rec.onresult = (e) => {
       const transcript = e.results?.[0]?.[0]?.transcript ?? "";
-      if (transcript) void send(transcript);
+      if (transcript) void send(transcript, true);
     };
     rec.onerror = () => {
       setListening(false);
@@ -147,6 +162,7 @@ export function ChatWidget({ open, onClose }: { open: boolean; onClose: () => vo
       rec.start();
       setListening(true);
       setVoiceReplies(true);
+      voiceRepliesRef.current = true;
     } catch {
       setListening(false);
     }
@@ -188,8 +204,13 @@ export function ChatWidget({ open, onClose }: { open: boolean; onClose: () => vo
               type="button"
               onClick={() =>
                 setVoiceReplies((v) => {
-                  if (v) window.speechSynthesis?.cancel();
-                  return !v;
+                  const next = !v;
+                  voiceRepliesRef.current = next;
+                  if (!next) {
+                    setSpeaking(false);
+                    window.speechSynthesis?.cancel();
+                  }
+                  return next;
                 })
               }
               aria-label={voiceReplies ? "Turn off voice replies" : "Turn on voice replies"}
@@ -233,6 +254,11 @@ export function ChatWidget({ open, onClose }: { open: boolean; onClose: () => vo
           {listening && (
             <p className="text-center text-xs font-medium text-primary" role="status">
               Listening… speak now
+            </p>
+          )}
+          {speaking && (
+            <p className="text-center text-xs font-medium text-primary" role="status">
+              Speaking…
             </p>
           )}
           {error && (
