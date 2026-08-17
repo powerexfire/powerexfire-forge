@@ -216,13 +216,23 @@ function Contact() {
 }
 
 function Field({ id, label, required, error, children }: { id: string; label: string; required?: boolean; error?: string; children: React.ReactNode }) {
+  const describedBy = error ? `${id}-error` : undefined;
   return (
     <div>
       <label htmlFor={id} className="mb-1.5 block text-sm font-medium">
         {label} {required && <span className="text-primary">*</span>}
       </label>
-      {children}
-      {error && <p role="alert" className="mt-1 text-xs text-destructive">{error}</p>}
+      {React.isValidElement(children)
+        ? React.cloneElement(children as React.ReactElement<Record<string, unknown>>, {
+            "aria-invalid": error ? true : undefined,
+            "aria-describedby": describedBy,
+          })
+        : children}
+      {error && (
+        <p id={describedBy} role="alert" className="mt-1 text-xs text-destructive">
+          {error}
+        </p>
+      )}
     </div>
   );
 }
