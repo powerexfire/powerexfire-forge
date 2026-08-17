@@ -53,6 +53,7 @@ export function ChatWidget({ open, onClose }: { open: boolean; onClose: () => vo
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
   const handsFreeRef = useRef(false);
   const voiceRepliesRef = useRef(false);
+  const abortRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
     setVoiceSupported(!!getRecognition());
@@ -66,6 +67,7 @@ export function ChatWidget({ open, onClose }: { open: boolean; onClose: () => vo
     if (!open) {
       handsFreeRef.current = false;
       recognitionRef.current?.stop();
+      abortRef.current?.abort();
       if (typeof window !== "undefined") window.speechSynthesis?.cancel();
       return;
     }
@@ -79,6 +81,7 @@ export function ChatWidget({ open, onClose }: { open: boolean; onClose: () => vo
   useEffect(
     () => () => {
       recognitionRef.current?.stop();
+      abortRef.current?.abort();
       if (typeof window !== "undefined") window.speechSynthesis?.cancel();
     },
     [],
@@ -115,11 +118,16 @@ export function ChatWidget({ open, onClose }: { open: boolean; onClose: () => vo
     const next = [...messages, { role: "user" as const, content }];
     setMessages(next);
     setLoading(true);
+    const controller = new AbortController();
+    abortRef.current?.abort();
+    abortRef.current = controller;
+    const timer = setTimeout(() => controller.abort(), 45000);
     try {
       const res = await fetch(chatEndpoint(), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: next.filter((m) => m !== GREETING) }),
+        signal: controller.signal,
       });
       const data = (await res.json().catch(() => ({}))) as { reply?: string; error?: string };
       if (!res.ok || !data.reply) {
@@ -134,8 +142,11 @@ export function ChatWidget({ open, onClose }: { open: boolean; onClose: () => vo
         });
       }
     } catch (err) {
+      if (controller.signal.aborted) return;
       setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
     } finally {
+      clearTimeout(timer);
+      if (abortRef.current === controller) abortRef.current = null;
       setLoading(false);
     }
   };
