@@ -1,7 +1,8 @@
 // Shared n8n webhook submission used by the feedback dialog and the contact form.
 // n8n does not always send CORS headers, so a readable POST is attempted first and
 // an opaque (no-cors) POST is used as a fallback — the payload still reaches n8n.
-export const FEEDBACK_WEBHOOK_URL = "https://jawepah.app.n8n.cloud/webhook/feedback";
+export const FEEDBACK_WEBHOOK_URL = "https://mibikef.app.n8n.cloud/webhook/feedback";
+const FEEDBACK_WEBHOOK_METHOD = "POST" as const;
 
 export async function submitToWebhook(
   payload: Record<string, unknown>,
@@ -18,7 +19,7 @@ export async function submitToWebhook(
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
     const res = await fetch(FEEDBACK_WEBHOOK_URL, {
-      method: "POST",
+      method: FEEDBACK_WEBHOOK_METHOD,
       headers: { "Content-Type": "application/json" },
       body,
       signal: controller.signal,
@@ -34,7 +35,7 @@ export async function submitToWebhook(
 
   try {
     await fetch(FEEDBACK_WEBHOOK_URL, {
-      method: "POST",
+      method: FEEDBACK_WEBHOOK_METHOD,
       mode: "no-cors",
       headers: { "Content-Type": "text/plain;charset=UTF-8" },
       body,
