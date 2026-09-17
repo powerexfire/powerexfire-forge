@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import React, { useState } from "react";
 import { z } from "zod";
 import { Phone, Mail, MapPin, MessageCircle, Send, CheckCircle2, Loader2 } from "lucide-react";
-import { submitToWebhook } from "@/lib/webhook";
+import { FEEDBACK_FORM_FALLBACK_URL, submitToWebhook } from "@/lib/webhook";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -70,9 +70,7 @@ function Contact() {
 
     if (!ok && !win) {
       setStatus("idle");
-      setSubmitError(
-        "We couldn't send your request. Please call +91 91677 52444 or email sales@powerexfire.com.",
-      );
+      setSubmitError("submit-failed");
       return;
     }
     setStatus("sent");
@@ -161,7 +159,16 @@ function Contact() {
 
           {submitError && (
             <p role="alert" className="mt-4 rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
-              {submitError}
+              We couldn&apos;t send your request. Please call +91 91677 52444, email sales@powerexfire.com, or use{" "}
+              <a
+                href={FEEDBACK_FORM_FALLBACK_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold underline underline-offset-2"
+              >
+                our alternate form
+              </a>
+              .
             </p>
           )}
 

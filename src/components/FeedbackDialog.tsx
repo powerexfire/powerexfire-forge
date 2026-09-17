@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { CheckCircle2, Loader2, MessageSquareHeart, X } from "lucide-react";
-import { submitToWebhook } from "@/lib/webhook";
+import { FEEDBACK_FORM_FALLBACK_URL, submitToWebhook } from "@/lib/webhook";
 
 type Errors = Partial<Record<"name" | "phone" | "email" | "feedback", string>>;
 
@@ -60,9 +60,7 @@ export function FeedbackDialog({ open, onClose }: { open: boolean; onClose: () =
       return;
     }
     setStatus("idle");
-    setSubmitError(
-      "We couldn't send your feedback. Please check your connection and try again, or call +91 91677 52444.",
-    );
+    setSubmitError("submit-failed");
   };
 
   useEffect(() => {
@@ -186,7 +184,16 @@ export function FeedbackDialog({ open, onClose }: { open: boolean; onClose: () =
 
             {submitError && (
               <p className="rounded-md bg-destructive/10 px-3 py-2 text-xs text-destructive" role="alert">
-                {submitError}
+                We couldn&apos;t send your feedback. Please try again, call +91 91677 52444, or use{" "}
+                <a
+                  href={FEEDBACK_FORM_FALLBACK_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-semibold underline underline-offset-2"
+                >
+                  our alternate feedback form
+                </a>
+                .
               </p>
             )}
 
