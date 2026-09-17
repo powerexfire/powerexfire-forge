@@ -1,7 +1,10 @@
 // Shared n8n webhook submission used by the feedback dialog and the contact form.
 // n8n does not always send CORS headers, so a readable POST is attempted first and
 // an opaque (no-cors) POST is used as a fallback — the payload still reaches n8n.
-export const FEEDBACK_WEBHOOK_URL = "https://mibikef.app.n8n.cloud/webhook/feedback";
+export const FEEDBACK_WEBHOOK_URL = "https://xacade.app.n8n.cloud/webhook/feedback";
+// Hosted n8n form users can fall back to when automated submission fails.
+export const FEEDBACK_FORM_FALLBACK_URL =
+  "https://xacade.app.n8n.cloud/form/cfcf4fd4-dba8-417c-ba04-19438a58409a";
 const FEEDBACK_WEBHOOK_METHOD = "POST" as const;
 
 export async function submitToWebhook(
