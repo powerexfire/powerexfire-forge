@@ -17,6 +17,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as GuidesFireSuppressionSystemsRouteImport } from './routes/guides.fire-suppression-systems'
 import { Route as GuidesFireExtinguisherTypesRouteImport } from './routes/guides.fire-extinguisher-types'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
+import { Route as ApiPublicLeadsRouteImport } from './routes/api/public/leads'
 import { Route as ApiPublicGscSetupRouteImport } from './routes/api/public/gsc-setup'
 import { Route as ApiPublicChatRouteImport } from './routes/api/public/chat'
 
@@ -62,6 +63,11 @@ const ApiChatRoute = ApiChatRouteImport.update({
   path: '/api/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicLeadsRoute = ApiPublicLeadsRouteImport.update({
+  id: '/api/public/leads',
+  path: '/api/public/leads',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicGscSetupRoute = ApiPublicGscSetupRouteImport.update({
   id: '/api/public/gsc-setup',
   path: '/api/public/gsc-setup',
@@ -84,6 +90,7 @@ export interface FileRoutesByFullPath {
   '/guides/fire-suppression-systems': typeof GuidesFireSuppressionSystemsRoute
   '/api/public/chat': typeof ApiPublicChatRoute
   '/api/public/gsc-setup': typeof ApiPublicGscSetupRoute
+  '/api/public/leads': typeof ApiPublicLeadsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -96,6 +103,7 @@ export interface FileRoutesByTo {
   '/guides/fire-suppression-systems': typeof GuidesFireSuppressionSystemsRoute
   '/api/public/chat': typeof ApiPublicChatRoute
   '/api/public/gsc-setup': typeof ApiPublicGscSetupRoute
+  '/api/public/leads': typeof ApiPublicLeadsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -109,6 +117,7 @@ export interface FileRoutesById {
   '/guides/fire-suppression-systems': typeof GuidesFireSuppressionSystemsRoute
   '/api/public/chat': typeof ApiPublicChatRoute
   '/api/public/gsc-setup': typeof ApiPublicGscSetupRoute
+  '/api/public/leads': typeof ApiPublicLeadsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -123,6 +132,7 @@ export interface FileRouteTypes {
     | '/guides/fire-suppression-systems'
     | '/api/public/chat'
     | '/api/public/gsc-setup'
+    | '/api/public/leads'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -135,6 +145,7 @@ export interface FileRouteTypes {
     | '/guides/fire-suppression-systems'
     | '/api/public/chat'
     | '/api/public/gsc-setup'
+    | '/api/public/leads'
   id:
     | '__root__'
     | '/'
@@ -147,6 +158,7 @@ export interface FileRouteTypes {
     | '/guides/fire-suppression-systems'
     | '/api/public/chat'
     | '/api/public/gsc-setup'
+    | '/api/public/leads'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -160,6 +172,7 @@ export interface RootRouteChildren {
   GuidesFireSuppressionSystemsRoute: typeof GuidesFireSuppressionSystemsRoute
   ApiPublicChatRoute: typeof ApiPublicChatRoute
   ApiPublicGscSetupRoute: typeof ApiPublicGscSetupRoute
+  ApiPublicLeadsRoute: typeof ApiPublicLeadsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -220,6 +233,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiChatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/leads': {
+      id: '/api/public/leads'
+      path: '/api/public/leads'
+      fullPath: '/api/public/leads'
+      preLoaderRoute: typeof ApiPublicLeadsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/gsc-setup': {
       id: '/api/public/gsc-setup'
       path: '/api/public/gsc-setup'
@@ -248,6 +268,7 @@ const rootRouteChildren: RootRouteChildren = {
   GuidesFireSuppressionSystemsRoute: GuidesFireSuppressionSystemsRoute,
   ApiPublicChatRoute: ApiPublicChatRoute,
   ApiPublicGscSetupRoute: ApiPublicGscSetupRoute,
+  ApiPublicLeadsRoute: ApiPublicLeadsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
