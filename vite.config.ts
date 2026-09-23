@@ -35,7 +35,7 @@ export default defineConfig({
     },
     sitemap: {
       enabled: true,
-      host: "https://powerexfire.lovable.app",
+      host: "https://powerexfire.in",
       outputPath: "sitemap.xml",
     },
   },

@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-const SITE = "https://powerexfire.lovable.app/";
-const SITEMAP = "https://powerexfire.lovable.app/sitemap.xml";
+const SITE = "https://powerexfire.in/";
+const SITEMAP = "https://powerexfire.in/sitemap.xml";
 const GW = "https://connector-gateway.lovable.dev/google_search_console";
 
 function headers() {
