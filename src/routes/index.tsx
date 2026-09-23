@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Phone, MessageCircle, ShieldCheck, Flame, Wrench, GraduationCap, Siren, CheckCircle2, Star, Quote } from "lucide-react";
-import heroImg from "@/assets/hero-fire.jpg";
-import extinguishers from "@/assets/extinguishers.jpg";
+import heroImg from "@/assets/hero-fire.webp";
+import extinguishers from "@/assets/extinguishers.webp";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -10,10 +10,10 @@ export const Route = createFileRoute("/")({
       { name: "description", content: "Fire extinguishers, alarms, hydrant systems, AMC and safety training. Trusted fire protection since 2010. Serving Vasai-Virar, Mumbai & all of India." },
       { property: "og:title", content: "Powerex Fire Protection System" },
       { property: "og:description", content: "Protecting lives with reliable fire safety solutions. Call +91 91677 52444." },
-      { property: "og:url", content: "https://powerexfire.lovable.app/" },
+      { property: "og:url", content: "https://powerexfire.in/" },
     ],
     links: [
-      { rel: "canonical", href: "https://powerexfire.lovable.app/" },
+      { rel: "canonical", href: "https://powerexfire.in/" },
     ],
     scripts: [
       {
@@ -22,8 +22,8 @@ export const Route = createFileRoute("/")({
           "@context": "https://schema.org",
           "@type": "LocalBusiness",
           name: "Powerex Fire Protection System",
-          image: "https://powerexfire.lovable.app/og-image.jpg",
-          url: "https://powerexfire.lovable.app/",
+          image: "https://powerexfire.in/og-image.jpg",
+          url: "https://powerexfire.in/",
           telephone: "+91-91677-52444",
           email: "info@powerexfire.com",
           priceRange: "₹₹",

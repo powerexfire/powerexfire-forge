@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Flame, Siren, ShieldCheck, Wrench, GraduationCap, HardHat, Droplets, Zap } from "lucide-react";
-import alarm from "@/assets/alarm-system.jpg";
+import alarm from "@/assets/alarm-system.webp";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
@@ -9,10 +9,10 @@ export const Route = createFileRoute("/services")({
       { name: "description", content: "Full range of fire protection services: ABC/CO2/foam extinguishers, fire alarm systems, hydrant & sprinkler turnkey projects, AMC, refilling and training." },
       { property: "og:title", content: "Powerex Fire — Services" },
       { property: "og:description", content: "Complete fire protection: equipment, installation, AMC, training." },
-      { property: "og:url", content: "https://powerexfire.lovable.app/services" },
+      { property: "og:url", content: "https://powerexfire.in/services" },
     ],
     links: [
-      { rel: "canonical", href: "https://powerexfire.lovable.app/services" },
+      { rel: "canonical", href: "https://powerexfire.in/services" },
     ],
   }),
   component: Services,

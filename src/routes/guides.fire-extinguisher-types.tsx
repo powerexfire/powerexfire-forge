@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Flame, Wind, Droplets, Zap, ChefHat, FlaskConical, CheckCircle2 } from "lucide-react";
-import extinguishers from "@/assets/extinguishers.jpg";
+import extinguishers from "@/assets/extinguishers.webp";
 
 const faqs = [
   {
@@ -102,12 +102,12 @@ export const Route = createFileRoute("/guides/fire-extinguisher-types")({
       { name: "description", content: "Compare ABC, CO2, foam, water, wet chemical, clean agent and D-class fire extinguishers. Match Class A–K fires to the right extinguisher for your facility in India." },
       { property: "og:title", content: "Fire Extinguisher Types & Classes — India Buyer's Guide" },
       { property: "og:description", content: "Facility manager's guide to fire extinguisher types in India — ABC, CO2, foam, water, wet chemical, clean agent and D-class." },
-      { property: "og:url", content: "https://powerexfire.lovable.app/guides/fire-extinguisher-types" },
+      { property: "og:url", content: "https://powerexfire.in/guides/fire-extinguisher-types" },
       { property: "og:type", content: "article" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
-      { rel: "canonical", href: "https://powerexfire.lovable.app/guides/fire-extinguisher-types" },
+      { rel: "canonical", href: "https://powerexfire.in/guides/fire-extinguisher-types" },
     ],
     scripts: [
       {
@@ -121,9 +121,9 @@ export const Route = createFileRoute("/guides/fire-extinguisher-types")({
           publisher: {
             "@type": "Organization",
             name: "Powerex Fire Protection System",
-            logo: { "@type": "ImageObject", url: "https://powerexfire.lovable.app/og-image.jpg" },
+            logo: { "@type": "ImageObject", url: "https://powerexfire.in/og-image.jpg" },
           },
-          mainEntityOfPage: "https://powerexfire.lovable.app/guides/fire-extinguisher-types",
+          mainEntityOfPage: "https://powerexfire.in/guides/fire-extinguisher-types",
           datePublished: "2026-07-06",
           dateModified: "2026-07-06",
         }),

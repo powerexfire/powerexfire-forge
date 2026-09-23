@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 Disallow: /api/
-Sitemap: https://powerexfire.lovable.app/sitemap.xml
+Sitemap: https://powerexfire.in/sitemap.xml
