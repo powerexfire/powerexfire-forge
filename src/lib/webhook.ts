@@ -32,6 +32,7 @@ export async function recordLeadBackup(
       body: JSON.stringify({
         source: "powerexfire-website",
         submittedAt: new Date().toISOString(),
+        pageUrl: typeof window === "undefined" ? undefined : window.location.href,
         ...payload,
       }),
       signal: controller.signal,
