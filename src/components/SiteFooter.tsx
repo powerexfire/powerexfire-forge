@@ -30,6 +30,8 @@ export function SiteFooter() {
             <li><Link to="/services" className="hover:text-primary">Services</Link></li>
             <li><Link to="/contact" className="hover:text-primary">Contact</Link></li>
             <li><Link to="/guides/fire-suppression-systems" className="hover:text-primary">Suppression Systems Guide</Link></li>
+            <li><Link to="/guides/fire-extinguisher-types" className="hover:text-primary">Extinguisher Types Guide</Link></li>
+            <li><Link to="/guides/fire-safety-audit-checklist" className="hover:text-primary">Fire Safety Audit Checklist</Link></li>
           </ul>
         </div>
         <div>
