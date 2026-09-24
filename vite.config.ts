@@ -26,6 +26,8 @@ export default defineConfig({
       { path: "/services" },
       { path: "/contact" },
       { path: "/guides/fire-suppression-systems" },
+      { path: "/guides/fire-extinguisher-types" },
+      { path: "/guides/fire-safety-audit-checklist" },
     ],
     prerender: {
       enabled: isGithubPages,
