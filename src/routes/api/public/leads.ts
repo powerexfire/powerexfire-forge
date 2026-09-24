@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
+import type { Json } from "@/integrations/supabase/types";
 
 // Public lead-backup endpoint. Every form submission is mirrored here so a
 // lead is never lost when the external n8n webhook is unreachable.
