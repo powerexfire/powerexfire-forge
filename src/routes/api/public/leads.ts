@@ -65,7 +65,7 @@ export const Route = createFileRoute("/api/public/leads")({
           console.error("lead insert failed:", error.message);
           return json({ error: "Could not record lead" }, 500);
         }
-        return json({ ok: true });
+        return json({ ok: true }, 200);
       },
     },
   },
