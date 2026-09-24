@@ -58,7 +58,7 @@ export const Route = createFileRoute("/api/public/leads")({
           email: d.email ?? null,
           message: d.message ?? null,
           page_url: d.pageUrl ?? null,
-          payload: d.payload ?? {},
+          payload: (d.payload ?? {}) as unknown as Json,
         });
 
         if (error) {
