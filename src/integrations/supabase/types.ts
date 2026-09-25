@@ -50,6 +50,30 @@ export type Database = {
         }
         Relationships: []
       }
+      webhook_settings: {
+        Row: {
+          id: string
+          label: string
+          method: string
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          id: string
+          label: string
+          method?: string
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          id?: string
+          label?: string
+          method?: string
+          updated_at?: string
+          url?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
