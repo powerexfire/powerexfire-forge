@@ -8,6 +8,20 @@
       "when": 1790177706785,
       "tag": "0000_create_leads_table",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1790349453712,
+      "tag": "0001_create_webhook_settings",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1790349522741,
+      "tag": "0002_create_user_roles_for_webhook_admin",
+      "breakpoints": true
     }
   ]
 }
