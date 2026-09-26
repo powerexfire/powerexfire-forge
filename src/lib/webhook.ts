@@ -1,11 +1,12 @@
-// Shared n8n webhook submission used by the feedback dialog and the contact form.
-// n8n does not always send CORS headers, so a readable POST is attempted first and
-// an opaque (no-cors) POST is used as a fallback — the payload still reaches n8n.
-export const FEEDBACK_WEBHOOK_URL = "https://xacade.app.n8n.cloud/webhook/feedback";
-// Hosted n8n form users can fall back to when automated submission fails.
-export const FEEDBACK_FORM_FALLBACK_URL =
-  "https://xacade.app.n8n.cloud/form/cfcf4fd4-dba8-417c-ba04-19438a58409a";
-const FEEDBACK_WEBHOOK_METHOD = "POST" as const;
+// Webhook destinations stay server-side; the public site only calls these API paths.
+const API_HOST = "https://powerexfire.lovable.app";
+function apiUrl(path: string) {
+  if (typeof window === "undefined") return path;
+  return window.location.hostname.endsWith("lovable.app") || window.location.hostname === "localhost"
+    ? path
+    : `${API_HOST}${path}`;
+}
+export const FEEDBACK_FORM_FALLBACK_URL = `${API_HOST}/api/public/feedback-fallback`;
 
 // The site is also hosted statically (GitHub Pages), where no server route exists.
 // In that case mirror leads to the CORS-enabled endpoint on the app host.
@@ -62,31 +63,19 @@ export async function submitToWebhook(
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
-    const res = await fetch(FEEDBACK_WEBHOOK_URL, {
-      method: FEEDBACK_WEBHOOK_METHOD,
-      headers: { "Content-Type": "application/json" },
+    const response = await fetch(apiUrl("/api/public/feedback"), {
+      method: "POST",
+      // A simple text request avoids browser preflight issues on the GitHub Pages domain.
+      headers: { "Content-Type": "text/plain;charset=UTF-8" },
       body,
       signal: controller.signal,
     });
-    if (res.ok) return { ok: true };
-    // 4xx/5xx from the webhook itself: retrying opaquely won't help.
-    if (res.status >= 400) return { ok: false };
-  } catch {
-    // CORS / network failure — fall through to the opaque attempt.
-  } finally {
-    clearTimeout(timer);
-  }
-
-  try {
-    await fetch(FEEDBACK_WEBHOOK_URL, {
-      method: FEEDBACK_WEBHOOK_METHOD,
-      mode: "no-cors",
-      headers: { "Content-Type": "text/plain;charset=UTF-8" },
-      body,
-      keepalive: true,
-    });
-    return { ok: true };
+    if (!response.ok) return { ok: false };
+    const result = await response.json() as { ok?: boolean };
+    return { ok: result.ok === true };
   } catch {
     return { ok: false };
+  } finally {
+    clearTimeout(timer);
   }
 }
