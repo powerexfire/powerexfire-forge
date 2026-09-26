@@ -17,7 +17,13 @@ const updateSchema = z.object({
     context.addIssue({ code: "custom", message: "The alternate form must use GET." });
   }
 });
-const ALLOWED_ORIGINS = new Set(["https://powerexfire.in", "https://www.powerexfire.in", "http://localhost:8080"]);
+const ALLOWED_ORIGINS = new Set([
+  "https://powerexfire.in",
+  "https://www.powerexfire.in",
+  "https://powerexfire.lovable.app",
+  "https://id-preview--e0e3e7f0-fb76-4db3-b7a5-abbceda91ce7.lovable.app",
+  "http://localhost:8080",
+]);
 function corsHeaders(request: Request) {
   const origin = request.headers.get("origin") ?? "";
   return {
