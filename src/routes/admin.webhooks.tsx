@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import type { FormEvent } from "react";
 import { Check, Loader2, LogIn, LogOut, Save, ShieldCheck, Webhook } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -71,7 +72,7 @@ function WebhookSettingsPage() {
     }
   }
 
-  async function signIn(event: React.FormEvent) {
+  async function signIn(event: FormEvent) {
     event.preventDefault();
     if (busy) return;
     setBusy(true);
@@ -96,7 +97,7 @@ function WebhookSettingsPage() {
     }
   }
 
-  async function saveSettings(event: React.FormEvent) {
+  async function saveSettings(event: FormEvent) {
     event.preventDefault();
     setBusy(true);
     setError("");

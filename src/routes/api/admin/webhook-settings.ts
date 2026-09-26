@@ -17,31 +17,49 @@ const updateSchema = z.object({
     context.addIssue({ code: "custom", message: "The alternate form must use GET." });
   }
 });
+const ALLOWED_ORIGINS = new Set(["https://powerexfire.in", "https://www.powerexfire.in", "http://localhost:8080"]);
+function corsHeaders(request: Request) {
+  const origin = request.headers.get("origin") ?? "";
+  return {
+    "Access-Control-Allow-Origin": ALLOWED_ORIGINS.has(origin) ? origin : "https://powerexfire.in",
+    "Access-Control-Allow-Methods": "GET, PUT, OPTIONS",
+    "Access-Control-Allow-Headers": "Authorization, Content-Type",
+    "Access-Control-Max-Age": "86400",
+    "Cache-Control": "no-store",
+    Vary: "Origin",
+  };
+}
+function json(request: Request, body: unknown, status = 200) {
+  return Response.json(body, { status, headers: corsHeaders(request) });
+}
 
 export const Route = createFileRoute("/api/admin/webhook-settings")({
   server: {
     handlers: {
+      OPTIONS: async ({ request }) => new Response(null, { status: 204, headers: corsHeaders(request) }),
       GET: async ({ request }) => {
+        if (!ALLOWED_ORIGINS.has(request.headers.get("origin") ?? "")) return json(request, { error: "Origin not allowed" }, 403);
         const { authorizeWebhookAdmin, getWebhookSettings } = await import("@/lib/webhook-settings.server");
-        if (!(await authorizeWebhookAdmin(request))) return Response.json({ error: "Unauthorized" }, { status: 401 });
+        if (!(await authorizeWebhookAdmin(request))) return json(request, { error: "Unauthorized" }, 401);
         try {
-          return Response.json({ settings: await getWebhookSettings() });
+          return json(request, { settings: await getWebhookSettings() });
         } catch {
-          return Response.json({ error: "Settings could not be loaded" }, { status: 503 });
+          return json(request, { error: "Settings could not be loaded" }, 503);
         }
       },
       PUT: async ({ request }) => {
+        if (!ALLOWED_ORIGINS.has(request.headers.get("origin") ?? "")) return json(request, { error: "Origin not allowed" }, 403);
         const { authorizeWebhookAdmin, isAllowedWebhookUrl } = await import("@/lib/webhook-settings.server");
-        if (!(await authorizeWebhookAdmin(request))) return Response.json({ error: "Unauthorized" }, { status: 401 });
+        if (!(await authorizeWebhookAdmin(request))) return json(request, { error: "Unauthorized" }, 401);
         let raw: unknown;
         try {
           raw = await request.json();
         } catch {
-          return Response.json({ error: "Invalid request" }, { status: 400 });
+          return json(request, { error: "Invalid request" }, 400);
         }
         const parsed = updateSchema.safeParse(raw);
         if (!parsed.success || parsed.data.settings.some((setting) => !isAllowedWebhookUrl(setting.url))) {
-          return Response.json({ error: "Use a secure n8n.cloud URL and supported method." }, { status: 400 });
+          return json(request, { error: "Use a secure n8n.cloud URL and supported method." }, 400);
         }
         const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
         const { error } = await supabaseAdmin.from("webhook_settings").upsert(
@@ -50,9 +68,9 @@ export const Route = createFileRoute("/api/admin/webhook-settings")({
         );
         if (error) {
           console.error("Unable to save webhook settings:", error.message);
-          return Response.json({ error: "Settings could not be saved" }, { status: 500 });
+          return json(request, { error: "Settings could not be saved" }, 500);
         }
-        return Response.json({ ok: true });
+        return json(request, { ok: true });
       },
     },
   },
