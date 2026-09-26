@@ -7,6 +7,13 @@ import { supabase } from "@/integrations/supabase/client";
 
 type Setting = { id: "feedback" | "feedback_fallback"; label: string; url: string; method: string; updated_at?: string };
 const ADMIN_EMAIL = "powerexfire2026@gmail.com";
+const ADMIN_API_HOST = "https://powerexfire.lovable.app";
+function adminApiUrl(path: string) {
+  if (typeof window === "undefined") return path;
+  return window.location.hostname.endsWith("lovable.app") || window.location.hostname === "localhost"
+    ? path
+    : `${ADMIN_API_HOST}${path}`;
+}
 
 export const Route = createFileRoute("/admin/webhooks")({
   head: () => ({
@@ -53,7 +60,7 @@ function WebhookSettingsPage() {
       const { data } = await supabase.auth.getSession();
       const token = data.session?.access_token;
       if (!token) throw new Error("Please sign in again.");
-      const response = await fetch("/api/admin/webhook-settings", { headers: { Authorization: `Bearer ${token}` } });
+      const response = await fetch(adminApiUrl("/api/admin/webhook-settings"), { headers: { Authorization: `Bearer ${token}` } });
       const result = await response.json();
       if (!response.ok) throw new Error(response.status === 401 ? "This account is not authorized to manage these settings." : result.error ?? "Could not load settings.");
       setSettings(result.settings as Setting[]);
@@ -98,7 +105,7 @@ function WebhookSettingsPage() {
       const { data } = await supabase.auth.getSession();
       const token = data.session?.access_token;
       if (!token) throw new Error("Please sign in again.");
-      const response = await fetch("/api/admin/webhook-settings", {
+      const response = await fetch(adminApiUrl("/api/admin/webhook-settings"), {
         method: "PUT",
         headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
         body: JSON.stringify({ settings: settings.map(({ id, url, method }) => ({ id, url, method })) }),
@@ -151,7 +158,7 @@ function WebhookSettingsPage() {
               <section key={setting.id} className="space-y-4 border border-border bg-card p-5">
                 <h2 className="font-semibold">{setting.label}</h2>
                 <label className="block space-y-1.5 text-sm font-medium">Destination URL<Input type="url" required value={setting.url} onChange={(event) => setSettings((current) => current.map((item) => item.id === setting.id ? { ...item, url: event.target.value } : item))} /></label>
-                <label className="block space-y-1.5 text-sm font-medium">Method<select className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm" value={setting.method} onChange={(event) => setSettings((current) => current.map((item) => item.id === setting.id ? { ...item, method: event.target.value } : item))}><option>POST</option><option>GET</option><option>PUT</option><option>PATCH</option></select></label>
+                <p className="text-sm text-muted-foreground">Request method: <span className="font-semibold text-foreground">{setting.method}</span></p>
               </section>
             ))}
             {error && <p className="text-sm text-destructive" role="alert">{error}</p>}

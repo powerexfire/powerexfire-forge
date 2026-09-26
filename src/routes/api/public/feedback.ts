@@ -5,6 +5,7 @@ const payloadSchema = z.record(z.string(), z.unknown()).refine((value) => Object
 const ALLOWED_ORIGINS = new Set([
   "https://powerexfire.in",
   "https://www.powerexfire.in",
+  "https://powerexfire.lovable.app",
   "http://localhost:8080",
 ]);
 function corsHeaders(request: Request) {
@@ -26,6 +27,8 @@ export const Route = createFileRoute("/api/public/feedback")({
     handlers: {
       OPTIONS: async ({ request }) => new Response(null, { status: 204, headers: corsHeaders(request) }),
       POST: async ({ request }) => {
+        const origin = request.headers.get("origin") ?? "";
+        if (!ALLOWED_ORIGINS.has(origin)) return json(request, { ok: false, error: "Origin not allowed" }, 403);
         const length = Number(request.headers.get("content-length") ?? 0);
         if (length > 32_000) return json(request, { ok: false, error: "Request too large" }, 413);
         let raw: unknown;

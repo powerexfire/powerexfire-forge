@@ -7,6 +7,15 @@ const updateSchema = z.object({
     url: z.string().url().max(1000),
     method: z.enum(["GET", "POST", "PUT", "PATCH"]),
   })).length(2),
+}).superRefine((value, context) => {
+  const ids = value.settings.map((setting) => setting.id);
+  if (new Set(ids).size !== 2) context.addIssue({ code: "custom", message: "Each setting must appear once." });
+  if (value.settings.some((setting) => setting.id === "feedback" && setting.method !== "POST")) {
+    context.addIssue({ code: "custom", message: "Feedback submissions must use POST." });
+  }
+  if (value.settings.some((setting) => setting.id === "feedback_fallback" && setting.method !== "GET")) {
+    context.addIssue({ code: "custom", message: "The alternate form must use GET." });
+  }
 });
 
 export const Route = createFileRoute("/api/admin/webhook-settings")({

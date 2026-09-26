@@ -6,7 +6,7 @@ function apiUrl(path: string) {
     ? path
     : `${API_HOST}${path}`;
 }
-export const FEEDBACK_FORM_FALLBACK_URL = apiUrl("/api/public/feedback-fallback");
+export const FEEDBACK_FORM_FALLBACK_URL = `${API_HOST}/api/public/feedback-fallback`;
 
 // The site is also hosted statically (GitHub Pages), where no server route exists.
 // In that case mirror leads to the CORS-enabled endpoint on the app host.
