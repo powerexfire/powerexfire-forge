@@ -6,6 +6,7 @@ const ALLOWED_ORIGINS = new Set([
   "https://powerexfire.in",
   "https://www.powerexfire.in",
   "https://powerexfire.lovable.app",
+  "https://id-preview--e0e3e7f0-fb76-4db3-b7a5-abbceda91ce7.lovable.app",
   "http://localhost:8080",
 ]);
 function corsHeaders(request: Request) {
