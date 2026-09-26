@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -121,16 +122,17 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const isPrivateAdmin = useRouterState({ select: (state) => state.location.pathname.startsWith("/admin/") });
 
   return (
     <QueryClientProvider client={queryClient}>
       <div className="flex min-h-dvh flex-col">
-        <SiteHeader />
+        {!isPrivateAdmin && <SiteHeader />}
         <main className="flex-1">
           <Outlet />
         </main>
-        <SiteFooter />
-        <FloatingActions />
+        {!isPrivateAdmin && <SiteFooter />}
+        {!isPrivateAdmin && <FloatingActions />}
       </div>
     </QueryClientProvider>
   );
