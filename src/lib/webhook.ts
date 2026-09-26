@@ -65,7 +65,8 @@ export async function submitToWebhook(
   try {
     const response = await fetch(apiUrl("/api/public/feedback"), {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      // A simple text request avoids browser preflight issues on the GitHub Pages domain.
+      headers: { "Content-Type": "text/plain;charset=UTF-8" },
       body,
       signal: controller.signal,
     });
