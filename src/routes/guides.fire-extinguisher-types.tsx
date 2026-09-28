@@ -105,6 +105,8 @@ export const Route = createFileRoute("/guides/fire-extinguisher-types")({
       { property: "og:url", content: "https://powerexfire.in/guides/fire-extinguisher-types" },
       { property: "og:type", content: "article" },
       { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:image", content: "https://powerexfire.in/og-image.jpg" },
+      { name: "twitter:image", content: "https://powerexfire.in/og-image.jpg" },
     ],
     links: [
       { rel: "canonical", href: "https://powerexfire.in/guides/fire-extinguisher-types" },
