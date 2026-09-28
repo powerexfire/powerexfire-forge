@@ -17,6 +17,10 @@ const updateSchema = z.object({
     context.addIssue({ code: "custom", message: "The alternate form must use GET." });
   }
 });
+const adminRequestSchema = z.discriminatedUnion("action", [
+  z.object({ action: z.literal("read"), accessToken: z.string().min(1).max(8192) }),
+  z.object({ action: z.literal("save"), accessToken: z.string().min(1).max(8192), settings: updateSchema.shape.settings }),
+]);
 const ALLOWED_ORIGINS = new Set([
   "https://powerexfire.in",
   "https://www.powerexfire.in",
@@ -28,8 +32,8 @@ function corsHeaders(request: Request) {
   const origin = request.headers.get("origin") ?? "";
   return {
     "Access-Control-Allow-Origin": ALLOWED_ORIGINS.has(origin) ? origin : "https://powerexfire.in",
-    "Access-Control-Allow-Methods": "GET, PUT, OPTIONS",
-    "Access-Control-Allow-Headers": "Authorization, Content-Type",
+    "Access-Control-Allow-Methods": "POST",
+    "Access-Control-Allow-Headers": "Content-Type",
     "Access-Control-Max-Age": "86400",
     "Cache-Control": "no-store",
     Vary: "Origin",
@@ -42,34 +46,35 @@ function json(request: Request, body: unknown, status = 200) {
 export const Route = createFileRoute("/api/admin/webhook-settings")({
   server: {
     handlers: {
-      OPTIONS: async ({ request }) => new Response(null, { status: 204, headers: corsHeaders(request) }),
-      GET: async ({ request }) => {
+      POST: async ({ request }) => {
         if (!ALLOWED_ORIGINS.has(request.headers.get("origin") ?? "")) return json(request, { error: "Origin not allowed" }, 403);
-        const { authorizeWebhookAdmin, getWebhookSettings } = await import("@/lib/webhook-settings.server");
-        if (!(await authorizeWebhookAdmin(request))) return json(request, { error: "Unauthorized" }, 401);
-        try {
-          return json(request, { settings: await getWebhookSettings() });
-        } catch {
-          return json(request, { error: "Settings could not be loaded" }, 503);
-        }
-      },
-      PUT: async ({ request }) => {
-        if (!ALLOWED_ORIGINS.has(request.headers.get("origin") ?? "")) return json(request, { error: "Origin not allowed" }, 403);
-        const { authorizeWebhookAdmin, isAllowedWebhookUrl } = await import("@/lib/webhook-settings.server");
-        if (!(await authorizeWebhookAdmin(request))) return json(request, { error: "Unauthorized" }, 401);
+        const contentLength = Number(request.headers.get("content-length") ?? 0);
+        if (Number.isFinite(contentLength) && contentLength > 24_000) return json(request, { error: "Request too large" }, 413);
         let raw: unknown;
         try {
           raw = await request.json();
         } catch {
           return json(request, { error: "Invalid request" }, 400);
         }
-        const parsed = updateSchema.safeParse(raw);
-        if (!parsed.success || parsed.data.settings.some((setting) => !isAllowedWebhookUrl(setting.url))) {
+        const parsed = adminRequestSchema.safeParse(raw);
+        if (!parsed.success) return json(request, { error: "Invalid request" }, 400);
+        const { authorizeWebhookAdmin, isAllowedWebhookUrl } = await import("@/lib/webhook-settings.server");
+        if (!(await authorizeWebhookAdmin(request, parsed.data.accessToken))) return json(request, { error: "Unauthorized" }, 401);
+        if (parsed.data.action === "read") {
+          const { getWebhookSettings } = await import("@/lib/webhook-settings.server");
+          try {
+            return json(request, { settings: await getWebhookSettings() });
+          } catch {
+            return json(request, { error: "Settings could not be loaded" }, 503);
+          }
+        }
+        const save = updateSchema.safeParse({ settings: parsed.data.settings });
+        if (!save.success || save.data.settings.some((setting) => !isAllowedWebhookUrl(setting.url))) {
           return json(request, { error: "Use a secure n8n.cloud URL and supported method." }, 400);
         }
         const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
         const { error } = await supabaseAdmin.from("webhook_settings").upsert(
-          parsed.data.settings.map((setting) => ({ ...setting, label: setting.id === "feedback" ? "Feedback and contact submissions" : "Alternate feedback form", updated_at: new Date().toISOString() })),
+          save.data.settings.map((setting) => ({ ...setting, label: setting.id === "feedback" ? "Feedback and contact submissions" : "Alternate feedback form", updated_at: new Date().toISOString() })),
           { onConflict: "id" },
         );
         if (error) {
