@@ -9,6 +9,8 @@ export const Route = createFileRoute("/about")({
       { property: "og:title", content: "About Powerex Fire Protection System" },
       { property: "og:description", content: "Trusted fire safety equipment & consulting since 2010." },
       { property: "og:url", content: "https://powerexfire.in/about" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
     links: [
       { rel: "canonical", href: "https://powerexfire.in/about" },

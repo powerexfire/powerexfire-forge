@@ -61,7 +61,11 @@ function WebhookSettingsPage() {
       const { data } = await supabase.auth.getSession();
       const token = data.session?.access_token;
       if (!token) throw new Error("Please sign in again.");
-      const response = await fetch(adminApiUrl("/api/admin/webhook-settings"), { headers: { Authorization: `Bearer ${token}` } });
+      const response = await fetch(adminApiUrl("/api/admin/webhook-settings"), {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=UTF-8" },
+        body: JSON.stringify({ action: "read", accessToken: token }),
+      });
       const result = await response.json();
       if (!response.ok) throw new Error(response.status === 401 ? "This account is not authorized to manage these settings." : result.error ?? "Could not load settings.");
       setSettings(result.settings as Setting[]);
@@ -107,9 +111,9 @@ function WebhookSettingsPage() {
       const token = data.session?.access_token;
       if (!token) throw new Error("Please sign in again.");
       const response = await fetch(adminApiUrl("/api/admin/webhook-settings"), {
-        method: "PUT",
-        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-        body: JSON.stringify({ settings: settings.map(({ id, url, method }) => ({ id, url, method })) }),
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=UTF-8" },
+        body: JSON.stringify({ action: "save", accessToken: token, settings: settings.map(({ id, url, method }) => ({ id, url, method })) }),
       });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error ?? "Could not save settings.");

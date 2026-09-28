@@ -18,9 +18,9 @@ function createUserClient(token: string) {
   });
 }
 
-export async function authorizeWebhookAdmin(request: Request) {
+export async function authorizeWebhookAdmin(request: Request, accessToken?: string) {
   const auth = request.headers.get("authorization") ?? "";
-  const token = auth.startsWith("Bearer ") ? auth.slice(7) : "";
+  const token = accessToken ?? (auth.startsWith("Bearer ") ? auth.slice(7) : "");
   if (!token) return null;
 
   const userClient = createUserClient(token);

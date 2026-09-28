@@ -11,6 +11,8 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "Powerex Fire Protection System" },
       { property: "og:description", content: "Protecting lives with reliable fire safety solutions. Call +91 91677 52444." },
       { property: "og:url", content: "https://powerexfire.in/" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
       { rel: "canonical", href: "https://powerexfire.in/" },

@@ -30,11 +30,38 @@ export const Route = createFileRoute("/api/public/feedback")({
       POST: async ({ request }) => {
         const origin = request.headers.get("origin") ?? "";
         if (!ALLOWED_ORIGINS.has(origin)) return json(request, { ok: false, error: "Origin not allowed" }, 403);
-        const length = Number(request.headers.get("content-length") ?? 0);
-        if (length > 32_000) return json(request, { ok: false, error: "Request too large" }, 413);
+        const declaredLength = Number(request.headers.get("content-length") ?? 0);
+        if (Number.isFinite(declaredLength) && declaredLength > 32_000) {
+          return json(request, { ok: false, error: "Request too large" }, 413);
+        }
+        const reader = request.body?.getReader();
+        if (!reader) return json(request, { ok: false, error: "Invalid request" }, 400);
+        const chunks: Uint8Array[] = [];
+        let bodyLength = 0;
+        try {
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            bodyLength += value.byteLength;
+            if (bodyLength > 32_000) {
+              await reader.cancel();
+              return json(request, { ok: false, error: "Request too large" }, 413);
+            }
+            chunks.push(value);
+          }
+        } catch {
+          await reader.cancel().catch(() => undefined);
+          return json(request, { ok: false, error: "Invalid request" }, 400);
+        }
+        const bodyBytes = new Uint8Array(bodyLength);
+        let offset = 0;
+        for (const chunk of chunks) {
+          bodyBytes.set(chunk, offset);
+          offset += chunk.byteLength;
+        }
         let raw: unknown;
         try {
-          raw = await request.json();
+          raw = JSON.parse(new TextDecoder().decode(bodyBytes));
         } catch {
           return json(request, { ok: false, error: "Invalid request" }, 400);
         }

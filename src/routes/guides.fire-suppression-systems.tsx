@@ -21,12 +21,14 @@ export const Route = createFileRoute("/guides/fire-suppression-systems")({
   head: () => ({
     meta: [
       { title: "Types of Fire Suppression Systems for Businesses" },
-      { name: "description", content: "Guide to fire suppression systems — CO2, clean agent, foam, water mist, dry chemical and kitchen hood systems. Compare uses, pros and cons for your business." },
+      { name: "description", content: "Guide to fire suppression systems: CO2, clean agent, foam, water mist, dry chemical and kitchen hood systems. Compare uses and pros for your business." },
       { property: "og:title", content: "Types of Fire Suppression Systems for Businesses" },
       { property: "og:description", content: "Compare CO2, clean agent, foam, water mist and dry chemical fire suppression systems and pick the right one for your site." },
       { property: "og:url", content: "https://powerexfire.in/guides/fire-suppression-systems" },
+      { property: "og:image", content: "https://powerexfire.in/og-image.jpg" },
       { property: "og:type", content: "article" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: "https://powerexfire.in/og-image.jpg" },
     ],
     links: [
       { rel: "canonical", href: "https://powerexfire.in/guides/fire-suppression-systems" },

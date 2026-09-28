@@ -10,6 +10,8 @@ export const Route = createFileRoute("/services")({
       { property: "og:title", content: "Powerex Fire — Services" },
       { property: "og:description", content: "Complete fire protection: equipment, installation, AMC, training." },
       { property: "og:url", content: "https://powerexfire.in/services" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
     links: [
       { rel: "canonical", href: "https://powerexfire.in/services" },
