@@ -17,9 +17,14 @@ const updateSchema = z.object({
     context.addIssue({ code: "custom", message: "The alternate form must use GET." });
   }
 });
+const settingSchema = z.object({
+  id: z.enum(["feedback", "feedback_fallback"]),
+  url: z.string().url().max(1000),
+  method: z.enum(["GET", "POST", "PUT", "PATCH"]),
+});
 const adminRequestSchema = z.discriminatedUnion("action", [
   z.object({ action: z.literal("read"), accessToken: z.string().min(1).max(8192) }),
-  z.object({ action: z.literal("save"), accessToken: z.string().min(1).max(8192), settings: updateSchema.shape.settings }),
+  z.object({ action: z.literal("save"), accessToken: z.string().min(1).max(8192), settings: z.array(settingSchema).length(2) }),
 ]);
 const ALLOWED_ORIGINS = new Set([
   "https://powerexfire.in",
