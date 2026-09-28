@@ -50,6 +50,7 @@ export const Route = createFileRoute("/api/public/feedback")({
             chunks.push(value);
           }
         } catch {
+          await reader.cancel().catch(() => undefined);
           return json(request, { ok: false, error: "Invalid request" }, 400);
         }
         const bodyBytes = new Uint8Array(bodyLength);
