@@ -99,7 +99,7 @@ export const Route = createFileRoute("/guides/fire-extinguisher-types")({
   head: () => ({
     meta: [
       { title: "Fire Extinguisher Types & Classes — India Buyer's Guide" },
-      { name: "description", content: "Compare ABC, CO2, foam, water, wet chemical, clean agent and D-class fire extinguishers. Match Class A–K fires to the right extinguisher for your facility in India." },
+      { name: "description", content: "Compare ABC, CO2, foam, water, wet chemical, clean agent and D-class extinguishers. Match Class A–K fires to the right type for your facility." },
       { property: "og:title", content: "Fire Extinguisher Types & Classes — India Buyer's Guide" },
       { property: "og:description", content: "Facility manager's guide to fire extinguisher types in India — ABC, CO2, foam, water, wet chemical, clean agent and D-class." },
       { property: "og:url", content: "https://powerexfire.in/guides/fire-extinguisher-types" },
