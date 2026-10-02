@@ -9,42 +9,27 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as AboutRouteImport } from './routes/about'
-import { Route as AdminRouteImport } from './routes/admin'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as ServicesRouteImport } from './routes/services'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as AdminWebhooksRouteImport } from './routes/admin.webhooks'
-import { Route as ApiChatRouteImport } from './routes/api/chat'
-import { Route as GuidesFireExtinguisherTypesRouteImport } from './routes/guides.fire-extinguisher-types'
-import { Route as GuidesFireSafetyAuditChecklistRouteImport } from './routes/guides.fire-safety-audit-checklist'
+import { Route as ServicesRouteImport } from './routes/services'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as GuidesFireSuppressionSystemsRouteImport } from './routes/guides.fire-suppression-systems'
-import { Route as ApiAdminWebhookSettingsRouteImport } from './routes/api/admin/webhook-settings'
-import { Route as ApiPublicChatRouteImport } from './routes/api/public/chat'
-import { Route as ApiPublicFeedbackRouteImport } from './routes/api/public/feedback'
-import { Route as ApiPublicFeedbackFallbackRouteImport } from './routes/api/public/feedback-fallback'
-import { Route as ApiPublicGscSetupRouteImport } from './routes/api/public/gsc-setup'
+import { Route as GuidesFireSafetyAuditChecklistRouteImport } from './routes/guides.fire-safety-audit-checklist'
+import { Route as GuidesFireExtinguisherTypesRouteImport } from './routes/guides.fire-extinguisher-types'
+import { Route as ApiChatRouteImport } from './routes/api/chat'
+import { Route as AdminWebhooksRouteImport } from './routes/admin.webhooks'
 import { Route as ApiPublicLeadsRouteImport } from './routes/api/public/leads'
+import { Route as ApiPublicGscSetupRouteImport } from './routes/api/public/gsc-setup'
+import { Route as ApiPublicFeedbackFallbackRouteImport } from './routes/api/public/feedback-fallback'
+import { Route as ApiPublicFeedbackRouteImport } from './routes/api/public/feedback'
+import { Route as ApiPublicChatRouteImport } from './routes/api/public/chat'
+import { Route as ApiAdminWebhookSettingsRouteImport } from './routes/api/admin/webhook-settings'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminRoute = AdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServicesRoute = ServicesRouteImport.update({
@@ -52,25 +37,30 @@ const ServicesRoute = ServicesRouteImport.update({
   path: '/services',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminWebhooksRoute = AdminWebhooksRouteImport.update({
-  id: '/webhooks',
-  path: '/webhooks',
-  getParentRoute: () => AdminRoute,
-} as any)
-const ApiChatRoute = ApiChatRouteImport.update({
-  id: '/api/chat',
-  path: '/api/chat',
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
-const GuidesFireExtinguisherTypesRoute =
-  GuidesFireExtinguisherTypesRouteImport.update({
-    id: '/guides/fire-extinguisher-types',
-    path: '/guides/fire-extinguisher-types',
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GuidesFireSuppressionSystemsRoute =
+  GuidesFireSuppressionSystemsRouteImport.update({
+    id: '/guides/fire-suppression-systems',
+    path: '/guides/fire-suppression-systems',
     getParentRoute: () => rootRouteImport,
   } as any)
 const GuidesFireSafetyAuditChecklistRoute =
@@ -79,25 +69,30 @@ const GuidesFireSafetyAuditChecklistRoute =
     path: '/guides/fire-safety-audit-checklist',
     getParentRoute: () => rootRouteImport,
   } as any)
-const GuidesFireSuppressionSystemsRoute =
-  GuidesFireSuppressionSystemsRouteImport.update({
-    id: '/guides/fire-suppression-systems',
-    path: '/guides/fire-suppression-systems',
+const GuidesFireExtinguisherTypesRoute =
+  GuidesFireExtinguisherTypesRouteImport.update({
+    id: '/guides/fire-extinguisher-types',
+    path: '/guides/fire-extinguisher-types',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ApiAdminWebhookSettingsRoute = ApiAdminWebhookSettingsRouteImport.update({
-  id: '/api/admin/webhook-settings',
-  path: '/api/admin/webhook-settings',
+const ApiChatRoute = ApiChatRouteImport.update({
+  id: '/api/chat',
+  path: '/api/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicChatRoute = ApiPublicChatRouteImport.update({
-  id: '/api/public/chat',
-  path: '/api/public/chat',
+const AdminWebhooksRoute = AdminWebhooksRouteImport.update({
+  id: '/webhooks',
+  path: '/webhooks',
+  getParentRoute: () => AdminRoute,
+} as any)
+const ApiPublicLeadsRoute = ApiPublicLeadsRouteImport.update({
+  id: '/api/public/leads',
+  path: '/api/public/leads',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicFeedbackRoute = ApiPublicFeedbackRouteImport.update({
-  id: '/api/public/feedback',
-  path: '/api/public/feedback',
+const ApiPublicGscSetupRoute = ApiPublicGscSetupRouteImport.update({
+  id: '/api/public/gsc-setup',
+  path: '/api/public/gsc-setup',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPublicFeedbackFallbackRoute =
@@ -106,14 +101,19 @@ const ApiPublicFeedbackFallbackRoute =
     path: '/api/public/feedback-fallback',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ApiPublicGscSetupRoute = ApiPublicGscSetupRouteImport.update({
-  id: '/api/public/gsc-setup',
-  path: '/api/public/gsc-setup',
+const ApiPublicFeedbackRoute = ApiPublicFeedbackRouteImport.update({
+  id: '/api/public/feedback',
+  path: '/api/public/feedback',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicLeadsRoute = ApiPublicLeadsRouteImport.update({
-  id: '/api/public/leads',
-  path: '/api/public/leads',
+const ApiPublicChatRoute = ApiPublicChatRouteImport.update({
+  id: '/api/public/chat',
+  path: '/api/public/chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminWebhookSettingsRoute = ApiAdminWebhookSettingsRouteImport.update({
+  id: '/api/admin/webhook-settings',
+  path: '/api/admin/webhook-settings',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -256,32 +256,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/services': {
@@ -291,39 +270,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/webhooks': {
-      id: '/admin/webhooks'
-      path: '/webhooks'
-      fullPath: '/admin/webhooks'
-      preLoaderRoute: typeof AdminWebhooksRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/api/chat': {
-      id: '/api/chat'
-      path: '/api/chat'
-      fullPath: '/api/chat'
-      preLoaderRoute: typeof ApiChatRouteImport
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/guides/fire-extinguisher-types': {
-      id: '/guides/fire-extinguisher-types'
-      path: '/guides/fire-extinguisher-types'
-      fullPath: '/guides/fire-extinguisher-types'
-      preLoaderRoute: typeof GuidesFireExtinguisherTypesRouteImport
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/guides/fire-safety-audit-checklist': {
-      id: '/guides/fire-safety-audit-checklist'
-      path: '/guides/fire-safety-audit-checklist'
-      fullPath: '/guides/fire-safety-audit-checklist'
-      preLoaderRoute: typeof GuidesFireSafetyAuditChecklistRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/guides/fire-suppression-systems': {
@@ -333,32 +305,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GuidesFireSuppressionSystemsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/admin/webhook-settings': {
-      id: '/api/admin/webhook-settings'
-      path: '/api/admin/webhook-settings'
-      fullPath: '/api/admin/webhook-settings'
-      preLoaderRoute: typeof ApiAdminWebhookSettingsRouteImport
+    '/guides/fire-safety-audit-checklist': {
+      id: '/guides/fire-safety-audit-checklist'
+      path: '/guides/fire-safety-audit-checklist'
+      fullPath: '/guides/fire-safety-audit-checklist'
+      preLoaderRoute: typeof GuidesFireSafetyAuditChecklistRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/chat': {
-      id: '/api/public/chat'
-      path: '/api/public/chat'
-      fullPath: '/api/public/chat'
-      preLoaderRoute: typeof ApiPublicChatRouteImport
+    '/guides/fire-extinguisher-types': {
+      id: '/guides/fire-extinguisher-types'
+      path: '/guides/fire-extinguisher-types'
+      fullPath: '/guides/fire-extinguisher-types'
+      preLoaderRoute: typeof GuidesFireExtinguisherTypesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/feedback': {
-      id: '/api/public/feedback'
-      path: '/api/public/feedback'
-      fullPath: '/api/public/feedback'
-      preLoaderRoute: typeof ApiPublicFeedbackRouteImport
+    '/api/chat': {
+      id: '/api/chat'
+      path: '/api/chat'
+      fullPath: '/api/chat'
+      preLoaderRoute: typeof ApiChatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/feedback-fallback': {
-      id: '/api/public/feedback-fallback'
-      path: '/api/public/feedback-fallback'
-      fullPath: '/api/public/feedback-fallback'
-      preLoaderRoute: typeof ApiPublicFeedbackFallbackRouteImport
+    '/admin/webhooks': {
+      id: '/admin/webhooks'
+      path: '/webhooks'
+      fullPath: '/admin/webhooks'
+      preLoaderRoute: typeof AdminWebhooksRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/api/public/leads': {
+      id: '/api/public/leads'
+      path: '/api/public/leads'
+      fullPath: '/api/public/leads'
+      preLoaderRoute: typeof ApiPublicLeadsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/gsc-setup': {
@@ -368,11 +347,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicGscSetupRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/leads': {
-      id: '/api/public/leads'
-      path: '/api/public/leads'
-      fullPath: '/api/public/leads'
-      preLoaderRoute: typeof ApiPublicLeadsRouteImport
+    '/api/public/feedback-fallback': {
+      id: '/api/public/feedback-fallback'
+      path: '/api/public/feedback-fallback'
+      fullPath: '/api/public/feedback-fallback'
+      preLoaderRoute: typeof ApiPublicFeedbackFallbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/feedback': {
+      id: '/api/public/feedback'
+      path: '/api/public/feedback'
+      fullPath: '/api/public/feedback'
+      preLoaderRoute: typeof ApiPublicFeedbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/chat': {
+      id: '/api/public/chat'
+      path: '/api/public/chat'
+      fullPath: '/api/public/chat'
+      preLoaderRoute: typeof ApiPublicChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/webhook-settings': {
+      id: '/api/admin/webhook-settings'
+      path: '/api/admin/webhook-settings'
+      fullPath: '/api/admin/webhook-settings'
+      preLoaderRoute: typeof ApiAdminWebhookSettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
