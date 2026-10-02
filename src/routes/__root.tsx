@@ -7,6 +7,7 @@ import {
   useRouterState,
   HeadContent,
   Scripts,
+  lazyRouteComponent,
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
@@ -103,7 +104,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
-  errorComponent: ErrorComponent,
+  errorComponent: lazyRouteComponent(() => Promise.resolve({ default: ErrorComponent })),
 });
 
 function RootShell({ children }: { children: React.ReactNode }) {
