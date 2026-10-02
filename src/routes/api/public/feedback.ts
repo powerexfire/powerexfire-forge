@@ -78,7 +78,7 @@ export const Route = createFileRoute("/api/public/feedback")({
         try {
           const target = new URL(setting.url);
           const method = setting.method;
-          const init: RequestInit = { method, signal: controller.signal, redirect: "error" };
+          const init: RequestInit = { method, signal: controller.signal };
           if (method === "GET") {
             for (const [key, value] of Object.entries(parsed.data)) {
               target.searchParams.set(key, typeof value === "string" ? value : JSON.stringify(value));
@@ -90,7 +90,11 @@ export const Route = createFileRoute("/api/public/feedback")({
           const upstream = await fetch(target, init);
           if (!upstream.ok) return json(request, { ok: false, error: "Delivery was rejected" }, 502);
           return json(request, { ok: true });
-        } catch {
+        } catch (error) {
+          console.error("Feedback webhook delivery failed", {
+            errorName: error instanceof Error ? error.name : "UnknownError",
+            message: error instanceof Error ? error.message : "Unknown delivery error",
+          });
           return json(request, { ok: false, error: "Delivery service is unavailable" }, 502);
         } finally {
           clearTimeout(timer);
