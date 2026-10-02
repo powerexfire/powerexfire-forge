@@ -31,7 +31,7 @@ export const Route = createFileRoute("/admin/webhooks")({
   component: WebhookSettingsPage,
 });
 
-function WebhookSettingsPage() {
+export function WebhookSettingsPage() {
   const [email, setEmail] = useState(ADMIN_EMAIL);
   const [password, setPassword] = useState("");
   const [signup, setSignup] = useState(false);

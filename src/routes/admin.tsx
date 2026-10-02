@@ -1,9 +1,7 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+import { WebhookSettingsPage } from "./admin.webhooks";
 
 export const Route = createFileRoute("/admin")({
-  beforeLoad: () => {
-    throw redirect({ to: "/admin/webhooks" });
-  },
   head: () => ({
     meta: [
       { title: "Private Admin | Powerex Fire" },
@@ -15,4 +13,5 @@ export const Route = createFileRoute("/admin")({
       { name: "twitter:card", content: "summary" },
     ],
   }),
+  component: WebhookSettingsPage,
 });
